@@ -24,6 +24,11 @@ contract Voting {
     mapping(address => bool) hasAddedOption;
     mapping(string => bool) optionExists;
 
+    event optionAdded(string, string);
+    event votingStarted(string);
+    event votingEnded(string);
+    event newVote(string, uint256);
+
     constructor(string memory pollTitle, address createdBy) {
         title = pollTitle;
         owner = createdBy;
@@ -60,6 +65,7 @@ contract Voting {
         VoteOption storage option = options[index];
         option.voteCount += 1;
         hasVoted[msg.sender] = true;
+        emit newVote(title, option.voteCount);
     }
 
     function startVoting() public {
@@ -67,12 +73,14 @@ contract Voting {
         require(state != VotingState.Ongoing, "Poll already active");
         require(options.length > 0, "There are no options yet.");
         state = VotingState.Ongoing;
+        emit votingStarted(title);
     }
 
     function endVoting() public {
         require(msg.sender == owner, "Only owner can stop the poll");
         require(state == VotingState.Ongoing, "Voting is not active");
         state = VotingState.Ended;
+        emit votingEnded(title);
     }
 
     function getState() public view returns (string memory) {
