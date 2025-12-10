@@ -1,0 +1,16 @@
+.navbar {
+	display: flex;
+}
+.navlist {
+	width: 100vw;
+	height: 5rem;
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	justify-content: space-around;
+	font-size: larger;
+	background-color: rgb(11, 100, 100);
+}
+.item {
+	margin-right: 15rem;
+}

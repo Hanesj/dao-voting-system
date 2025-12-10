@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
 import './App.css';
 import {
 	createPublicClient,
@@ -9,14 +7,35 @@ import {
 	http,
 	type WalletClient,
 	type PublicClient,
-	parseAbi,
 } from 'viem';
-import { factoryAbi, address, pollAbi } from './Utilities/abi';
+import { factoryAbi, address, pollAbi } from './utilities/abi';
 import { localhost } from 'viem/chains';
+import Navbar from './components/navbar/Navbar';
+import CreatePollForm from './components/CreatePollForm/CreatePollForm';
+import PollCard from './components/PollCard/PollCard';
+import type { Poll } from './models/Poll';
+import { getFullPoll } from './services/api';
 function App() {
-	const [count, setCount] = useState(0);
 	const [pubClient, setPubClient] = useState<PublicClient | null>(null);
 	const [wallet, setWallet] = useState<WalletClient | null>(null);
+	const [polls, setPolls] = useState<Poll[]>([
+		{
+			title: 'Example Poll 1',
+			owner: '0xTTT',
+			state: 'Not started',
+			options: [{ option: 'Do this', suggester: '0xCCC', voteCount: 0 }],
+		},
+	]);
+
+	// const addPoll = (title: string) => {
+	// 	setPolls([...polls, { title, options: [] }]);
+	// };
+
+	// const vote = (pollIndex: number, optionIndex: number) => {
+	// alert(
+	// `Voted on ${polls[pollIndex].options[optionIndex]} in poll ${polls[pollIndex].title}`
+	// );
+	// };
 
 	useEffect(() => {
 		const client = createPublicClient({
@@ -32,9 +51,8 @@ function App() {
 	}, []);
 
 	useEffect(() => {
-		const test = async () => {
+		const getPollAddress = async () => {
 			if (pubClient) {
-				let b;
 				const a = await pubClient.readContract({
 					abi: factoryAbi,
 					address,
@@ -42,69 +60,37 @@ function App() {
 					args: [0],
 				});
 				if (a) {
-					b = a as `0x${string}`;
-
-					const c = await pubClient.readContract({
-						abi: pollAbi,
-						address: b,
-						functionName: 'getTitle',
-					});
-					console.log(`Polltitle `, c);
+					const pollsFromChain = await getFullPoll(a, pubClient);
+					if (pollsFromChain) {
+						setPolls([...polls, pollsFromChain]);
+					}
 				}
-				console.log(`Num of polls: ${a}`);
+				console.log(`Address of pollcontract: ${a}`);
 			}
 		};
 
-		test();
-	}, [pubClient, wallet]);
-
-	function listFunctions(abi: any[]) {
-		return abi
-			.filter((x) => x.type === 'function')
-			.map((fn) => ({
-				name: fn.name,
-				inputs: fn.inputs?.map((i: any) => `${i.name}:${i.type}`),
-				outputs: fn.outputs?.map((o: any) => o.type),
-				stateMutability: fn.stateMutability,
-			}));
-	}
-	const abi1 = listFunctions(factoryAbi);
-	console.log(abi1);
-	const abi2 = listFunctions(pollAbi);
-	console.log(abi2);
-
-	// console.log(pubClient);
-	// console.log(wallet);
-	// const contract = getContract({ address, abi, client });
-	// console.log(contract);
-	// const contract2 = client.getLogs();
-	// console.log(contract2);
+		getPollAddress();
+	}, [pubClient]);
+	// console.log(polls);
 	return (
 		<>
-			<div>
-				<a href='https://vite.dev' target='_blank'>
-					<img src={viteLogo} className='logo' alt='Vite logo' />
-				</a>
-				<a href='https://react.dev' target='_blank'>
-					<img
-						src={reactLogo}
-						className='logo react'
-						alt='React logo'
-					/>
-				</a>
-			</div>
-			<h1>Vite + React</h1>
-			<div className='card'>
-				<button onClick={() => setCount((count) => count + 1)}>
-					count is {count}
+			<Navbar />
+			<div className='container'>
+				<h1>Voting DApp MVP</h1>
+
+				<button
+					className='button'
+					onClick={() => alert('Connect Wallet flow!')}>
+					Connect Wallet
 				</button>
-				<p>
-					Edit <code>src/App.tsx</code> and save to test HMR
-				</p>
+
+				{/* <CreatePollForm addPoll={addPoll} /> */}
+				<CreatePollForm />
+
+				<h2>Polls</h2>
+				{polls &&
+					polls.map((poll, i) => <PollCard key={i} poll={poll} />)}
 			</div>
-			<p className='read-the-docs'>
-				Click on the Vite and React logos to learn more
-			</p>
 		</>
 	);
 }
