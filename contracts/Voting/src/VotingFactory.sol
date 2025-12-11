@@ -10,12 +10,13 @@ contract VotingFactory {
 
     mapping(string => bool) pollExists;
 
-    function createPoll(string memory title) public {
+    function createPoll(string memory title) public returns (address) {
         require(!pollExists[title]);
         Voting v = new Voting(title, msg.sender);
         polls.push(v);
         pollExists[title] = true;
         emit pollCreated(address(v), title, msg.sender);
+        return address(v);
     }
 
     function getNumOfPolls() public view returns (uint256) {

@@ -24,7 +24,7 @@ contract Voting {
     mapping(address => bool) hasAddedOption;
     mapping(string => bool) optionExists;
 
-    event optionAdded(string, string);
+    event optionAdded(string, address);
     event votingStarted(string);
     event votingEnded(string);
     event newVote(string, uint256);
@@ -35,18 +35,25 @@ contract Voting {
         state = VotingState.NotStarted;
     }
 
-    function addOptionToPoll(string memory addOption) public {
+    function addOptionToPoll(string memory addOption) public returns (string memory) {
         require(state == VotingState.NotStarted, "Cannot add option after voting has started.");
         require(keccak256(bytes(addOption)) != keccak256(bytes("")), "Optionname cannot be empty.");
         require(!optionExists[addOption], "Option already exists.");
 
-        if (!hasAddedOption[msg.sender]) {
+        // Temporary multiple options per user
+        if (!hasAddedOption[msg.sender] || hasAddedOption[msg.sender]) {
             options.push(VoteOption({option: addOption, suggester: msg.sender, voteCount: 0}));
             hasAddedOption[msg.sender] = true;
             optionExists[addOption] = true;
+            emit optionAdded(addOption, msg.sender);
+            return "Option added.";
         } else {
             revert("Can only add one option per user.");
         }
+    }
+
+    function getOwner() public view returns (address) {
+        return owner;
     }
 
     function getNumOfOptions() public view returns (uint256) {
@@ -61,7 +68,8 @@ contract Voting {
     function voteOnOption(uint256 index) public {
         require(state == VotingState.Ongoing, "Voting is not ongoing.");
         require(index < options.length);
-        require(!hasVoted[msg.sender], "Can only vote once.");
+        // Temporary users can vote multiple times
+        //require(!hasVoted[msg.sender], "Can only vote once.");
         VoteOption storage option = options[index];
         option.voteCount += 1;
         hasVoted[msg.sender] = true;

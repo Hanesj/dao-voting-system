@@ -3,10 +3,10 @@ import { pubClient } from '../services/clients';
 import { pollAbi } from '../utilities/abi';
 import { useWallet } from './useWallet';
 import { getFullPoll } from '../services/api';
-import { usePolls } from './usePolls';
 import type { Poll } from '../models/Poll';
+import { usePollsContext } from '../context/PollsContext';
 export const usePoll = () => {
-	const { polls, setPolls } = usePolls();
+	const { polls, setPolls } = usePollsContext();
 	const { wallet } = useWallet();
 	const addOptionToPoll = async (addressToPoll: string, title: string) => {
 		if (wallet && pubClient) {

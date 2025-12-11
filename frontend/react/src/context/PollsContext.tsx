@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import {
+	createContext,
+	useCallback,
+	useContext,
+	useEffect,
+	useState,
+} from 'react';
 import type { Poll } from '../models/Poll';
 import { useWallet } from '../hooks/useWallet';
 import { parseEventLogs } from 'viem';
@@ -9,6 +15,7 @@ import { getFullPoll } from '../services/api';
 export interface PollsContextValue {
 	polls: Poll[];
 	addPoll: (title: string) => Promise<void>;
+	setPolls: React.Dispatch<React.SetStateAction<Poll[]>>;
 }
 
 const PollsContext = createContext<PollsContextValue | undefined>(undefined);
@@ -25,10 +32,10 @@ export const PollsProvider = ({ children }: { children: React.ReactNode }) => {
 	]);
 	const [loading, isLoading] = useState<boolean>(true);
 
-	useEffect(() => {
+	const getPolls = useCallback(async () => {
 		const pollsOnChain: Poll[] = [];
-		const getPolls = async () => {
-			if (pubClient) {
+		if (pubClient) {
+			try {
 				const numPolls = await pubClient.readContract({
 					abi: factoryAbi,
 					address,
@@ -50,61 +57,68 @@ export const PollsProvider = ({ children }: { children: React.ReactNode }) => {
 					}
 				}
 				//console.log(`Address of pollcontract: ${a}`);
-			}
-			if (pollsOnChain.length > 0) {
-				setPolls(pollsOnChain);
-			}
-		};
-
-		getPolls();
-		// console.log(pollsOnChain);
-	}, [pubClient]);
-
-	const addPoll = async (title: string) => {
-		if (wallet && pubClient) {
-			try {
-				const { request } = await pubClient.simulateContract({
-					abi: factoryAbi,
-					address,
-					functionName: 'createPoll',
-					args: [title],
-					account: wallet.account,
-				});
-
-				const txHash = await wallet.writeContract(request);
-				const receipt = await pubClient.waitForTransactionReceipt({
-					hash: txHash,
-				});
-
-				console.log('Receipt: ', receipt);
-
-				const logs = parseEventLogs({
-					abi: factoryAbi,
-
-					logs: receipt.logs,
-				});
-				const pollCreated: any = logs.find(
-					(p: any) => p.eventName === 'pollCreated'
-				);
-				console.log(pollCreated.args);
-				if (pollCreated) {
-					setPolls((polls) => [
-						...polls,
-						{
-							title,
-							state: '',
-							options: [],
-							owner: pollCreated.args.createdBy as string,
-							address: pollCreated.args.pollAddress,
-						},
-					]);
+				if (pollsOnChain.length > 0) {
+					setPolls(pollsOnChain);
 				}
 			} catch (error) {
 				console.log(error);
 			}
 		}
-	};
-	const values = { polls, addPoll };
+	}, [pubClient]);
+
+	useEffect(() => {
+		getPolls();
+		// console.log(pollsOnChain);
+	}, [getPolls]);
+
+	const addPoll = useCallback(
+		async (title: string) => {
+			if (wallet && pubClient) {
+				try {
+					const { request } = await pubClient.simulateContract({
+						abi: factoryAbi,
+						address,
+						functionName: 'createPoll',
+						args: [title],
+						account: wallet.account,
+					});
+
+					const txHash = await wallet.writeContract(request);
+					const receipt = await pubClient.waitForTransactionReceipt({
+						hash: txHash,
+					});
+
+					console.log('Receipt: ', receipt);
+
+					const logs = parseEventLogs({
+						abi: factoryAbi,
+
+						logs: receipt.logs,
+					});
+					const pollCreated: any = logs.find(
+						(p: any) => p.eventName === 'pollCreated'
+					);
+					console.log(pollCreated.args);
+					if (pollCreated) {
+						setPolls((polls) => [
+							...polls,
+							{
+								title,
+								state: '',
+								options: [],
+								owner: pollCreated.args.createdBy as string,
+								address: pollCreated.args.pollAddress,
+							},
+						]);
+					}
+				} catch (error) {
+					console.log(error);
+				}
+			}
+		},
+		[wallet, pubClient]
+	);
+	const values = { polls, addPoll, setPolls };
 	return (
 		<PollsContext.Provider value={values}>{children}</PollsContext.Provider>
 	);
