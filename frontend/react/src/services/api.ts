@@ -13,6 +13,12 @@ export const getFullPoll = async (
 		functionName: 'getTitle',
 	})) as string;
 
+	const owner = (await pubClient.readContract({
+		abi: pollAbi,
+		address: addressConverted,
+		functionName: 'getOwner',
+	})) as string;
+
 	const state = (await pubClient.readContract({
 		abi: pollAbi,
 		address: addressConverted,
@@ -36,7 +42,7 @@ export const getFullPoll = async (
 		options.push(option);
 	}
 
-	const fullPoll = { title, state, options };
+	const fullPoll = { title, state, options, owner };
 
 	console.log(fullPoll);
 	return fullPoll;

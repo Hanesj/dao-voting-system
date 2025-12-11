@@ -8,7 +8,9 @@ type Props = {
 export default function PollCard({ poll }: Props) {
 	return (
 		<div className='card'>
-			<h3>{poll.title}</h3>
+			<h3>
+				{poll.title} - {poll.owner}
+			</h3>
 			<p>Options:</p>
 			{poll.options.length === 0 && <p>No options yet.</p>}
 			{poll.options.map((opt, i) => (

@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import './CreatePollForm.css';
 
 interface Props {
-	// addPoll: (title: string) => void;
+	addPoll: (title: string) => void;
 }
-export default function CreatePollForm(props: Props) {
+export default function CreatePollForm({ addPoll }: Props) {
 	const [title, setTitle] = useState('');
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		if (!title) return;
-		//addPoll(title);
+		addPoll(title);
 		setTitle('');
 	};
 

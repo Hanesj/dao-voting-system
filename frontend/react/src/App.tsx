@@ -7,9 +7,11 @@ import {
 	http,
 	type WalletClient,
 	type PublicClient,
+	defineChain,
+	parseEventLogs,
 } from 'viem';
 import { factoryAbi, address, pollAbi } from './utilities/abi';
-import { localhost } from 'viem/chains';
+import { anvil, localhost } from 'viem/chains';
 import Navbar from './components/navbar/Navbar';
 import CreatePollForm from './components/CreatePollForm/CreatePollForm';
 import PollCard from './components/PollCard/PollCard';
@@ -27,10 +29,6 @@ function App() {
 		},
 	]);
 
-	// const addPoll = (title: string) => {
-	// 	setPolls([...polls, { title, options: [] }]);
-	// };
-
 	// const vote = (pollIndex: number, optionIndex: number) => {
 	// alert(
 	// `Voted on ${polls[pollIndex].options[optionIndex]} in poll ${polls[pollIndex].title}`
@@ -42,50 +40,131 @@ function App() {
 			chain: localhost,
 			transport: http('http://127.0.0.1:8545'),
 		});
-		const wallet = createWalletClient({
-			chain: localhost,
-			transport: custom(window.ethereum),
-		});
+
+		// const wallet = createWalletClient({
+		// 	chain: localhost,
+		// 	transport: custom(window.ethereum),
+		// });
+
+		//console.log(address);
 		setPubClient(client);
-		setWallet(wallet);
+		// setWallet(wallet);
 	}, []);
 
 	useEffect(() => {
+		const pollsOnChain: Poll[] = [];
 		const getPollAddress = async () => {
 			if (pubClient) {
-				const a = await pubClient.readContract({
+				const numPolls = await pubClient.readContract({
 					abi: factoryAbi,
 					address,
-					functionName: 'getPollAddress',
-					args: [0],
+					functionName: 'getNumOfPolls',
 				});
-				if (a) {
-					const pollsFromChain = await getFullPoll(a, pubClient);
-					if (pollsFromChain) {
-						setPolls([...polls, pollsFromChain]);
+
+				for (let i = 0; i < Number(numPolls); i++) {
+					const a = await pubClient.readContract({
+						abi: factoryAbi,
+						address,
+						functionName: 'getPollAddress',
+						args: [i],
+					});
+					if (a) {
+						const pollFromChain = await getFullPoll(a, pubClient);
+						if (pollFromChain) {
+							pollsOnChain.push(pollFromChain);
+						}
 					}
 				}
-				console.log(`Address of pollcontract: ${a}`);
+				//console.log(`Address of pollcontract: ${a}`);
 			}
+			setPolls([...polls, ...pollsOnChain]);
 		};
 
 		getPollAddress();
+		// console.log(pollsOnChain);
 	}, [pubClient]);
 	// console.log(polls);
+
+	const connectWallet = async () => {
+		const [account] = await window.ethereum!.request({
+			method: 'eth_requestAccounts',
+		});
+		const anvil = defineChain({
+			id: 31337,
+			name: 'Anvil',
+			nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+			rpcUrls: {
+				default: { http: ['http://127.0.0.1:8545'] },
+			},
+		});
+		const wallet = createWalletClient({
+			account,
+			chain: anvil,
+			transport: custom(window.ethereum),
+		});
+		// const account = privateKeyToAccount(address);
+		// console.log(wallet);
+		// console.log(address);
+		setWallet(wallet);
+		console.log(wallet);
+		console.log(account);
+	};
+	const addPoll = async (title: string) => {
+		if (wallet && pubClient) {
+			try {
+				const { request } = await pubClient.simulateContract({
+					abi: factoryAbi,
+					address,
+					functionName: 'createPoll',
+					args: [title],
+					account: wallet.account,
+				});
+
+				const txHash = await wallet.writeContract(request);
+				const receipt = await pubClient.waitForTransactionReceipt({
+					hash: txHash,
+				});
+
+				console.log('Receipt: ', receipt);
+
+				const logs = parseEventLogs({
+					abi: factoryAbi,
+
+					logs: receipt.logs,
+				});
+				const pollCreated: any = logs.find(
+					(p: any) => p.eventName! === 'pollCreated'
+				);
+				console.log(pollCreated.args.createdBy);
+				console.log('Logs: ', logs);
+				if (pollCreated) {
+					setPolls([
+						...polls,
+						{
+							title,
+							state: '',
+							options: [],
+							owner: pollCreated.args.createdBy as string,
+						},
+					]);
+				}
+			} catch (error) {
+				console.log(error);
+			}
+		}
+	};
 	return (
 		<>
 			<Navbar />
 			<div className='container'>
 				<h1>Voting DApp MVP</h1>
 
-				<button
-					className='button'
-					onClick={() => alert('Connect Wallet flow!')}>
+				<button className='button' onClick={connectWallet}>
 					Connect Wallet
 				</button>
 
 				{/* <CreatePollForm addPoll={addPoll} /> */}
-				<CreatePollForm />
+				<CreatePollForm addPoll={addPoll} />
 
 				<h2>Polls</h2>
 				{polls &&

@@ -35,6 +35,13 @@ export const factoryAbi = [
 		stateMutability: 'nonpayable',
 		type: 'function',
 		name: 'createPoll',
+		outputs: [
+			{
+				internalType: 'address',
+				name: '',
+				type: 'address',
+			},
+		],
 	},
 	{
 		inputs: [],
@@ -69,7 +76,6 @@ export const factoryAbi = [
 		],
 	},
 ];
-
 export const pollAbi = [
 	{
 		inputs: [
@@ -86,6 +92,70 @@ export const pollAbi = [
 		],
 		stateMutability: 'nonpayable',
 		type: 'constructor',
+	},
+	{
+		inputs: [
+			{
+				internalType: 'string',
+				name: '',
+				type: 'string',
+				indexed: false,
+			},
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256',
+				indexed: false,
+			},
+		],
+		type: 'event',
+		name: 'newVote',
+		anonymous: false,
+	},
+	{
+		inputs: [
+			{
+				internalType: 'string',
+				name: '',
+				type: 'string',
+				indexed: false,
+			},
+			{
+				internalType: 'string',
+				name: '',
+				type: 'string',
+				indexed: false,
+			},
+		],
+		type: 'event',
+		name: 'optionAdded',
+		anonymous: false,
+	},
+	{
+		inputs: [
+			{
+				internalType: 'string',
+				name: '',
+				type: 'string',
+				indexed: false,
+			},
+		],
+		type: 'event',
+		name: 'votingEnded',
+		anonymous: false,
+	},
+	{
+		inputs: [
+			{
+				internalType: 'string',
+				name: '',
+				type: 'string',
+				indexed: false,
+			},
+		],
+		type: 'event',
+		name: 'votingStarted',
+		anonymous: false,
 	},
 	{
 		inputs: [
@@ -158,6 +228,19 @@ export const pollAbi = [
 		inputs: [],
 		stateMutability: 'view',
 		type: 'function',
+		name: 'getOwner',
+		outputs: [
+			{
+				internalType: 'address',
+				name: '',
+				type: 'address',
+			},
+		],
+	},
+	{
+		inputs: [],
+		stateMutability: 'view',
+		type: 'function',
 		name: 'getState',
 		outputs: [
 			{
@@ -200,4 +283,4 @@ export const pollAbi = [
 	},
 ];
 
-export const address = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+export const address = '0x700b6A60ce7EaaEA56F065753d8dcB9653dbAD35'; //'0x5FbDB2315678afecb367f032d93F642f64180aa3';
