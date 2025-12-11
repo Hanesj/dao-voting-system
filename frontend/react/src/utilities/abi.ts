@@ -1,3 +1,4 @@
+import { parseAbi } from 'viem';
 export const factoryAbi = [
 	{
 		inputs: [
@@ -76,6 +77,34 @@ export const factoryAbi = [
 		],
 	},
 ];
+
+// export const pollAbi = parseAbi([
+// 	// --- KONSTRUKTOR ---
+// 	'constructor(string pollTitle, address createdBy)',
+
+// 	// --- WRITE FUNKTIONER (State-ändring) ---
+// 	'function addOptionToPoll(string addOption) returns (string)',
+// 	'function endVoting()', // Void funktion
+// 	'function startVoting()', // Void funktion (som orsakade felet tidigare, nu fixad)
+// 	'function voteOnOption(uint256 index)', // Void funktion
+
+// 	// --- VIEW FUNKTIONER (Läsning) ---
+// 	'function getNumOfOptions() view returns (uint256)',
+
+// 	// Complex Tuple/Struct Returvärde
+// 	// Voting.VoteOption har 3 fält: (string option, uint16 voteCount, address suggester)
+// 	'function getOption(uint256 index) view returns ((string option, uint16 voteCount, address suggester))',
+
+// 	'function getOwner() view returns (address)',
+// 	'function getState() view returns (string)',
+// 	'function getTitle() view returns (string)',
+
+// 	// --- EVENTS ---
+// 	'event newVote(string, uint256)',
+// 	'event optionAdded(string, address)',
+// 	'event votingEnded(string)',
+// 	'event votingStarted(string)',
+// ]);
 export const pollAbi = [
 	{
 		inputs: [
@@ -121,9 +150,9 @@ export const pollAbi = [
 				indexed: false,
 			},
 			{
-				internalType: 'string',
+				internalType: 'address',
 				name: '',
-				type: 'string',
+				type: 'address',
 				indexed: false,
 			},
 		],
@@ -168,6 +197,13 @@ export const pollAbi = [
 		stateMutability: 'nonpayable',
 		type: 'function',
 		name: 'addOptionToPoll',
+		outputs: [
+			{
+				internalType: 'string',
+				name: '',
+				type: 'string',
+			},
+		],
 	},
 	{
 		inputs: [],

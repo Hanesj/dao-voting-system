@@ -42,8 +42,8 @@ export const getFullPoll = async (
 		options.push(option);
 	}
 
-	const fullPoll = { title, state, options, owner };
+	const fullPoll = { title, state, options, owner, address };
 
-	console.log(fullPoll);
+	// console.log(fullPoll);
 	return fullPoll;
 };
