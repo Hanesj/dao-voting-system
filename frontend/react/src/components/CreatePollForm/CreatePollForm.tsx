@@ -16,17 +16,13 @@ export default function CreatePollForm({ addPoll }: Props) {
 
 	return (
 		<form onSubmit={handleSubmit}>
-			<h2>Create New Poll</h2>
-			<label>
-				Poll Title:
-				<input
-					type='text'
-					value={title}
-					onChange={(e) => setTitle(e.target.value)}
-					placeholder='Enter poll title'
-				/>
-			</label>
-			<button type='submit'>Create Poll</button>
+			<input
+				type='text'
+				value={title}
+				onChange={(e) => setTitle(e.target.value)}
+				placeholder='Enter poll title'
+			/>
+			<button type='submit'>Add</button>
 		</form>
 	);
 }

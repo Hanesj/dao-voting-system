@@ -1,24 +1,155 @@
-.card {
-	background-color: white;
-	border-radius: 8;
-	padding: 1rem;
-	margin-bottom: 1rem;
-	box-shadow: '0 2px 6px rgba(0;0,0,0.1)';
+:root {
+	--color-primary: #4f46e5; /* Indigo */
+	--color-text: #334155;
+	--color-background: #f4f6f8; /* Lätt grå bakgrund */
+	--color-card-bg: #ffffff; /* Vit kortbakgrund */
+	--color-border: #e2e8f0; /* Lätt grå border */
 }
-.option {
-	display: flex;
-	justify-content: space-between;
 
-	margin: 0.5rem 0;
+/* Globala reset/setup */
+* {
+	box-sizing: border-box; /* Viktig för layout! */
+	font-family: 'Inter', sans-serif; /* Använd en ren font */
+	color: var(--color-text);
+	/* padding: 0.3rem; Kan vara OK, men sätt noll i body/html */
+	/* border-radius: 4px; Mjukare hörn */
+}
+
+body {
+	background-color: var(--color-background);
+	margin: 0;
+	/* padding: 2rem; */
+	padding-top: 0.5rem;
+}
+
+.container {
+	max-width: 1000px; /* Begränsa bredden för bättre läsbarhet */
+	margin: 0 auto;
+	padding: 2rem;
+}
+
+/* KORTDESIGN */
+.card {
+	background-color: var(--color-card-bg); /* Ren vit bakgrund */
+	border-radius: 12px; /* Rundare hörn */
+	padding: 1.5rem; /* Ökat padding */
+	margin-bottom: 2rem;
+	border: 1px solid var(--color-border); /* Lägg till en diskret kantlinje */
+
+	/* Mjuk och lyftande skugga */
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05),
+		0 2px 4px -2px rgba(0, 0, 0, 0.05);
+}
+.enableVote {
+	display: flex;
+	justify-content: center;
 }
 .btn {
+	/* Gör knappen till en flex-container */
+	display: inline-flex;
+	/* Centrera ikonen och texten vertikalt */
+	align-items: center;
+	/* Lägg till lite mellanrum om du har både ikon och text */
+	gap: 0.5rem;
+
+	/* Övriga stilar... */
 	cursor: pointer;
-	background-color: #4f46e5;
+	background-color: var(--color-primary);
 	color: white;
-	border: none;
-	padding: 0.3rem 0.6rem;
-	border-radius: 6;
+	padding: 0.5rem 1rem;
+	border-radius: 8px;
 }
-h5 {
-	font-size: medium;
+
+/* HUVUDTEXT (H3/H4) */
+h1 {
+	color: var(--color-text);
+	text-align: center;
+	margin-bottom: 2rem;
+}
+h3 {
+	/* Ta bort den starka bakgrundsfärgen, använd accentfärgen för titeln istället */
+	color: var(--color-primary);
+	font-size: 1.5rem;
+	padding: 0;
+	margin: 0 0 1rem 0;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+h5,
+h4 {
+	/* Ta bort burlywood, låt bakgrunden vara ren */
+	background-color: transparent;
+	font-size: 1rem;
+	color: var(--color-text);
+	opacity: 0.7; /* Gör texten lite svagare för att inte konkurrera med titeln */
+	text-align: left;
+	padding: 0;
+}
+
+/* I din App.css / styles.css */
+
+/* Huvudcontainern (den du redan har) */
+.option {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between; /* Sprider ut elementen */
+	align-items: center;
+	padding: 1rem;
+	width: 100%; /* Viktigt */
+	/* ... övriga stilar ... */
+}
+
+/* Kolumn 1: Titel (bör ta mest plats) */
+.option-title {
+	/* Låt titeln ta upp allt ledigt utrymme */
+	flex-grow: 1;
+	/* Lägg till en min-bredd för att säkerställa att den inte blir för liten på små skärmar */
+	min-width: 150px;
+	/* Lägg till lite padding/gap i koden ovan för visuellt mellanrum */
+}
+
+/* Kolumn 2: Suggester (fast eller proportionell bredd) */
+.option-suggester {
+	/* Ge den en fast bredd, eftersom innehållet alltid är 12 tecken + "..." */
+	min-width: 150px;
+	/* Flex-shrink för att den ska krympa vid behov */
+	flex-shrink: 0;
+	text-align: right;
+}
+
+/* Kolumn 3: Röstningsdata (fast bredd) */
+.option-votes {
+	/* Ge den en fast bredd */
+	width: 120px;
+	flex-shrink: 0;
+	text-align: right;
+	margin-right: 1rem; /* Minska gapet till knappen */
+}
+
+/* Knappen (Bör vara kompakt och flyta till höger) */
+.vote-btn {
+	/* Se till att knappen inte tar mer plats än nödvändigt */
+	width: auto;
+	padding: 0.5rem;
+	flex-shrink: 0; /* Förhindra att den krymper */
+	margin-left: 0; /* För att inte påverka layouten */
+}
+
+/* FORMULÄR */
+form {
+	display: flex;
+	gap: 1rem;
+	padding: 0;
+	margin-bottom: 2rem;
+}
+form input {
+	flex-grow: 1;
+	padding: 0.75rem;
+	border: 1px solid var(--color-border);
+	border-radius: 8px;
+}
+form > button {
+	flex-grow: 0; /* Låt knappen vara smalare */
+	align-self: center;
 }

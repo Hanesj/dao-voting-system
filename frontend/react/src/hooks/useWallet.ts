@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
 	createWalletClient,
 	custom,
@@ -11,7 +11,7 @@ export const useWallet = () => {
 	const [wallet, setWallet] = useState<WalletClient | null>(null);
 	const [isConnected, setIsConnected] = useState<boolean>(false);
 
-	const connectWallet = async () => {
+	const connectWallet = useCallback(async () => {
 		const [account] = await window.ethereum!.request({
 			method: 'eth_requestAccounts',
 		});
@@ -32,7 +32,7 @@ export const useWallet = () => {
 		setWallet(wallet);
 		console.log(wallet);
 		console.log(account);
-	};
+	}, [wallet]);
 	useEffect(() => {
 		connectWallet();
 		setIsConnected(true);

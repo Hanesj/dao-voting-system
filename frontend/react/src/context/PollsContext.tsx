@@ -104,7 +104,7 @@ export const PollsProvider = ({ children }: { children: React.ReactNode }) => {
 							...polls,
 							{
 								title,
-								state: '',
+								state: 'Voting has not begun.',
 								options: [],
 								owner: pollCreated.args.createdBy as string,
 								address: pollCreated.args.pollAddress,

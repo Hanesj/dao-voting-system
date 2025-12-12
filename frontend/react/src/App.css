@@ -83,21 +83,3 @@ textarea,
 select {
 	font: inherit;
 }
-.container {
-	max-width: 800;
-	margin: '2rem auto';
-	padding: '1rem';
-	font-family: 'system-ui; sans-serif';
-	line-height: 1.5;
-	background-color: '#f9f9f9';
-	color: '#333';
-}
-.button {
-	cursor: 'pointer';
-	background-color: '#4f46e5';
-	color: 'white';
-	border: 'none';
-	padding: '0.5rem 1rem';
-	border-radius: 6;
-	margin-bottom: '1rem';
-}

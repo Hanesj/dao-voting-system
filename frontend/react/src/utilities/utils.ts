@@ -1,3 +1,6 @@
+import { parseEventLogs, type PublicClient } from 'viem';
+import { pollAbi } from './abi';
+
 export const listFunctions = (abi: any[]) => {
 	return abi
 		.filter((x) => x.type === 'function')
@@ -7,4 +10,18 @@ export const listFunctions = (abi: any[]) => {
 			outputs: fn.outputs?.map((o: any) => o.type),
 			stateMutability: fn.stateMutability,
 		}));
+};
+
+export const getTxLogs = async (
+	hash: `0x${string}`,
+	pubClient: PublicClient
+) => {
+	const receipt = await pubClient.waitForTransactionReceipt({
+		hash,
+	});
+	const logs = parseEventLogs({
+		abi: pollAbi,
+		logs: receipt.logs,
+	});
+	return logs;
 };

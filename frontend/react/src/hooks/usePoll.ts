@@ -5,7 +5,9 @@ import { useWallet } from './useWallet';
 import { getFullPoll } from '../services/api';
 import type { Poll } from '../models/Poll';
 import { usePollsContext } from '../context/PollsContext';
-export const usePoll = () => {
+import { getTxLogs } from '../utilities/utils';
+import type { IUsePollHook } from '../models/IUsePoll';
+export const usePoll = (): IUsePollHook => {
 	const { polls, setPolls } = usePollsContext();
 	const { wallet } = useWallet();
 	const addOptionToPoll = async (addressToPoll: string, title: string) => {
@@ -19,7 +21,7 @@ export const usePoll = () => {
 					account: wallet.account,
 				});
 				const txHash = await wallet.writeContract(request);
-				console.log(txHash);
+				// console.log(txHash);
 				const receipt = await pubClient.waitForTransactionReceipt({
 					hash: txHash,
 				});
@@ -113,22 +115,51 @@ export const usePoll = () => {
 					account: wallet.account,
 				});
 				const txHash = await wallet.writeContract(request);
-				const receipt = await pubClient.waitForTransactionReceipt({
-					hash: txHash,
-				});
-				const logs = parseEventLogs({
-					abi: pollAbi,
-					logs: receipt.logs,
-				});
+				const logs = await getTxLogs(txHash, pubClient);
 				const voteStarted: any = logs.find(
 					(v: any) => v.eventName === 'votingStarted'
 				);
 				console.log(voteStarted.args);
+				const updatedPolls = polls.map((p) => {
+					if (p.address !== addressToPoll) {
+						return p;
+					}
+					return { ...p, state: 'Voting is ongoing.' };
+				});
+				setPolls(updatedPolls);
+			} catch (error) {
+				console.log(error);
+			}
+		}
+	};
+	const closeVoting = async (addressToPoll: string) => {
+		const parsedEndVoteAbi = parseAbi([
+			'function endVoting()',
+			'event votingEnded(string)',
+		]);
+		if (wallet && pubClient) {
+			try {
+				const { request } = await pubClient.simulateContract({
+					abi: parsedEndVoteAbi,
+					address: addressToPoll as `0x${string}`,
+					functionName: 'endVoting',
+					account: wallet.account,
+				});
+				const txHash = await wallet.writeContract(request);
+				const logs = await getTxLogs(txHash, pubClient);
+				console.log(logs);
+				const updatedPolls = polls.map((p) => {
+					if (p.address !== addressToPoll) {
+						return p;
+					}
+					return { ...p, state: 'Voting has ended.' };
+				});
+				setPolls(updatedPolls);
 			} catch (error) {
 				console.log(error);
 			}
 		}
 	};
 
-	return { addOptionToPoll, addVote, openVoting };
+	return { addOptionToPoll, addVote, openVoting, closeVoting };
 };
