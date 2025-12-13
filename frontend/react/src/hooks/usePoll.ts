@@ -38,10 +38,17 @@ export const usePoll = (): IUsePollHook => {
 						addressToPoll,
 						pubClient
 					);
-					const newPolls: Poll[] = polls.filter(
-						(p) => p.title !== optionAdded.title
-					);
-					setPolls([...newPolls, optionAdded]);
+					const newPolls: Poll[] = polls.map((p) => {
+						if (p.address !== addressToPoll) {
+							return { ...p };
+						}
+						return {
+							...p,
+							options: optionAdded.options,
+						};
+					});
+
+					setPolls(newPolls);
 				}
 			} catch (error) {
 				console.log(error);

@@ -10,17 +10,20 @@ type Props = {
 const Options = ({ poll }: Props) => {
 	const [title, setTitle] = useState<string>('');
 	const { addVote, addOptionToPoll } = usePoll();
-	const handleVote = (e: MouseEvent<HTMLButtonElement>, index: number) => {
+	const handleVote = async (
+		e: MouseEvent<HTMLButtonElement>,
+		index: number
+	) => {
 		e.preventDefault();
 		//console.log(poll.options[index]);
-		addVote(poll.address, poll.options[index].option);
+		await addVote(poll.address, poll.options[index].option);
 	};
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		if (!title) return;
 		//console.log(title, ' ', poll.address);
 		console.log('address to poll:', poll.address);
-		addOptionToPoll(poll.address, title);
+		await addOptionToPoll(poll.address, title);
 		setTitle('');
 	};
 	return (

@@ -28,7 +28,9 @@ function App() {
 
 				<h2>Polls</h2>
 				{polls &&
-					polls.map((poll, i) => <PollCard key={i} poll={poll} />)}
+					polls.map((poll) => (
+						<PollCard key={poll.address} poll={poll} />
+					))}
 			</div>
 		</>
 	);

@@ -3,6 +3,7 @@ import {
 	useCallback,
 	useContext,
 	useEffect,
+	useMemo,
 	useState,
 } from 'react';
 import type { Poll } from '../models/Poll';
@@ -14,6 +15,7 @@ import { getFullPoll } from '../services/api';
 
 export interface PollsContextValue {
 	polls: Poll[];
+	masterPolls: Poll[];
 	addPoll: (title: string) => Promise<void>;
 	setPolls: React.Dispatch<React.SetStateAction<Poll[]>>;
 }
@@ -30,6 +32,7 @@ export const PollsProvider = ({ children }: { children: React.ReactNode }) => {
 			address: '0x0',
 		},
 	]);
+	const [masterPolls, setMasterPolls] = useState<Poll[]>([]);
 	const [loading, isLoading] = useState<boolean>(true);
 
 	const getPolls = useCallback(async () => {
@@ -59,6 +62,7 @@ export const PollsProvider = ({ children }: { children: React.ReactNode }) => {
 				//console.log(`Address of pollcontract: ${a}`);
 				if (pollsOnChain.length > 0) {
 					setPolls(pollsOnChain);
+					setMasterPolls(pollsOnChain);
 				}
 			} catch (error) {
 				console.log(error);
@@ -118,7 +122,13 @@ export const PollsProvider = ({ children }: { children: React.ReactNode }) => {
 		},
 		[wallet, pubClient]
 	);
-	const values = { polls, addPoll, setPolls };
+	const values = {
+		polls,
+		addPoll,
+		setPolls,
+		masterPolls,
+	};
+
 	return (
 		<PollsContext.Provider value={values}>{children}</PollsContext.Provider>
 	);
