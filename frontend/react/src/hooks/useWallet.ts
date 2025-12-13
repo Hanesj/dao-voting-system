@@ -12,6 +12,7 @@ export const useWallet = () => {
 	const [isConnected, setIsConnected] = useState<boolean>(false);
 
 	const connectWallet = useCallback(async () => {
+		if (!window.ethereum.isMetaMask) return alert('Endast metamask');
 		const [account] = await window.ethereum!.request({
 			method: 'eth_requestAccounts',
 		});
@@ -30,8 +31,8 @@ export const useWallet = () => {
 		});
 
 		setWallet(wallet);
-		console.log(wallet);
-		console.log(account);
+		// console.log(wallet);
+		// console.log(account);
 	}, [wallet]);
 	useEffect(() => {
 		connectWallet();

@@ -34,6 +34,7 @@ export const PollsProvider = ({ children }: { children: React.ReactNode }) => {
 	]);
 	const [masterPolls, setMasterPolls] = useState<Poll[]>([]);
 	const [loading, isLoading] = useState<boolean>(true);
+	const [pageNo, setPageNo] = useState<number>(0);
 
 	const getPolls = useCallback(async () => {
 		const pollsOnChain: Poll[] = [];

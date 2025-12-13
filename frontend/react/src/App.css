@@ -83,3 +83,9 @@ textarea,
 select {
 	font: inherit;
 }
+
+.pagination {
+	display: flex;
+	justify-content: center;
+	gap: 2rem;
+}
