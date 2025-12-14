@@ -32,7 +32,7 @@ export const PollsProvider = ({ children }: { children: React.ReactNode }) => {
 			address: '0x0',
 		},
 	]);
-	const [masterPolls, setMasterPolls] = useState<Poll[]>([]);
+	const [masterPolls, setMasterPolls] = useState<Poll[]>(polls);
 	const [loading, isLoading] = useState<boolean>(true);
 	const [pageNo, setPageNo] = useState<number>(0);
 
@@ -106,6 +106,16 @@ export const PollsProvider = ({ children }: { children: React.ReactNode }) => {
 					console.log(pollCreated.args);
 					if (pollCreated) {
 						setPolls((polls) => [
+							...polls,
+							{
+								title,
+								state: 'Voting has not begun.',
+								options: [],
+								owner: pollCreated.args.createdBy as string,
+								address: pollCreated.args.pollAddress,
+							},
+						]);
+						setMasterPolls((polls) => [
 							...polls,
 							{
 								title,

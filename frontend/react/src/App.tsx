@@ -5,45 +5,45 @@ import PollCard from './components/PollCard/PollCard';
 import { useWallet } from './hooks/useWallet';
 import { usePollsContext } from './context/PollsContext';
 import SearchPoll from './components/SearchPoll/SearchPoll';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import Navbar from './components/navbar/Navbar';
 function App() {
 	const { connectWallet } = useWallet();
 	const { polls, addPoll, masterPolls } = usePollsContext();
 	const [pageNo, setPageNo] = useState<number>(0);
-	const itemsPerPage = 1;
+	const itemsPerPage = 2;
 	//const { addOptionToPoll, addVote, openVoting } = usePoll();
 
-	const pollsPerPage = polls.slice(
-		pageNo * itemsPerPage,
-		(pageNo + 1) * itemsPerPage
-	);
+	const totalNumberOfPages = Math.ceil(masterPolls.length / itemsPerPage);
+	const hasNextPage = pageNo < totalNumberOfPages - 1;
+
+	const startIndex = pageNo * itemsPerPage;
+	const endIndex = startIndex + itemsPerPage;
+	const pollsPerPage = polls.slice(startIndex, endIndex);
 
 	const handleClick = (dir: number) => {
 		console.log(pollsPerPage);
-		if (dir === -1 && pageNo > 0) setPageNo((prev) => prev - 1);
-		if (dir === 1 && pollsPerPage.length > 0) setPageNo((prev) => prev + 1);
+		if (dir === -1) setPageNo((prev) => prev - 1);
+		if (dir === 1 && hasNextPage) setPageNo((prev) => prev + 1);
 		console.log('Klick?');
 	};
 
 	return (
 		<>
 			{/* <Navbar /> */}
-			{console.log(masterPolls)}
-
+			<h1 className='control-section-title'>Find and Create Polls</h1>
 			<div className='container'>
-				<h1>Voting DApp MVP</h1>
-
 				{/* <button className='button' onClick={connectWallet}>
 					Connect Wallet
 				</button> */}
 
 				{/* <CreatePollForm addPoll={addPoll} /> */}
-				<div>
+				<div className='searchBar'>
 					<SearchPoll setPageNo={setPageNo} />
 				</div>
+				<br />
 				<CreatePollForm addPoll={addPoll} />
 
-				<h2>Polls</h2>
 				{pollsPerPage.length > 0 &&
 					pollsPerPage.map((poll) => (
 						<PollCard key={poll.address} poll={poll} />
@@ -55,10 +55,9 @@ function App() {
 					<button onClick={() => handleClick(-1)}>&lt;</button>
 				)}
 				<p>{pageNo + 1}</p>
-				{pollsPerPage.length >= 1 &&
-					masterPolls.length > pageNo + 1 && (
-						<button onClick={() => handleClick(1)}>&gt;</button>
-					)}
+				{hasNextPage && (
+					<button onClick={() => handleClick(1)}>&gt;</button>
+				)}
 			</div>
 		</>
 	);

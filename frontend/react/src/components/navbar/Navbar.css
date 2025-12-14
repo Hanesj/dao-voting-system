@@ -14,3 +14,23 @@
 .item {
 	margin-right: 15rem;
 }
+
+.main-header {
+	background-color: var(--color-header-bg);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtil skugga lyfter headern */
+	width: 100%;
+	/* position: fixed; Gör headern fast vid toppen */
+	top: 1rem;
+	left: 0;
+	z-index: 1000;
+}
+
+.header-container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 20px;
+	height: 70px;
+	display: flex;
+	justify-content: space-between; /* Sprider ut logotyp och navigation */
+	align-items: center;
+}

@@ -1,9 +1,10 @@
 :root {
 	--color-primary: #4f46e5; /* Indigo */
 	--color-text: #334155;
-	--color-background: #f4f6f8; /* Lätt grå bakgrund */
+	--color-background: #7dacdb; /* Lätt grå bakgrund */
 	--color-card-bg: #ffffff; /* Vit kortbakgrund */
 	--color-border: #e2e8f0; /* Lätt grå border */
+	--color-header-bg: #ffffff;
 }
 
 /* Globala reset/setup */
@@ -152,4 +153,8 @@ form input {
 form > button {
 	flex-grow: 0; /* Låt knappen vara smalare */
 	align-self: center;
+}
+
+.addOption {
+	margin: 2rem 0;
 }

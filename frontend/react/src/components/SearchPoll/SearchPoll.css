@@ -3,15 +3,19 @@ input {
 	border: 1px solid var(--color-border);
 	border-radius: 8px;
 	width: 50%;
+	margin-bottom: 1px;
 }
 .searchResults {
 	display: flex;
 	flex-direction: column;
+	gap: 2px;
+	width: 70%;
+
 	li {
 		padding: 0.75rem;
 		border: 1px solid var(--color-border);
 		border-radius: 8px;
-		width: 50%;
+		min-width: 100%;
 		background-color: white;
 		display: flex;
 		justify-content: space-between;

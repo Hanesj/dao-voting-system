@@ -10,21 +10,8 @@ type Props = {
 };
 
 export default function PollCard({ poll }: Props) {
-	const [title, setTitle] = useState<string>('');
 	const { closeVoting, openVoting } = usePoll();
-	//const { addPoll, polls, setPolls } = usePollsContext();
-	// const handleSubmit = (e: React.FormEvent) => {
-	// 	e.preventDefault();
-	// 	if (!title) return;
-	// 	//console.log(title, ' ', poll.address);
-	// 	addOptionToPoll(poll.address, title);
-	// 	setTitle('');
-	// };
-	// const handleVote = (e: MouseEvent<HTMLButtonElement>, index: number) => {
-	// 	e.preventDefault();
-	// 	//console.log(poll.options[index]);
-	// 	addVote(poll.address, poll.options[index].option);
-	// };
+
 	return (
 		<div className='card'>
 			<h3>
@@ -35,17 +22,23 @@ export default function PollCard({ poll }: Props) {
 			<h5>Address: {poll.address}</h5>
 			{poll.state !== 'Voting has ended.' &&
 				(poll.state === 'Voting has not begun.' ? (
-					<button onClick={() => openVoting(poll.address)}>
+					<button
+						className='open-vote-btn'
+						onClick={() => openVoting(poll.address)}>
 						Open voting
 					</button>
 				) : (
-					<button onClick={() => closeVoting(poll.address)}>
+					<button
+						className='open-vote-btn'
+						onClick={() => closeVoting(poll.address)}>
 						Close voting
 					</button>
 				))}
 
-			<p>Options:</p>
-			<Options poll={poll} />
+			<div className='addOption'>
+				<p className='no-options'>Options:</p>
+				<Options poll={poll} />
+			</div>
 		</div>
 	);
 }

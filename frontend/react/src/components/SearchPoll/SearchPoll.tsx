@@ -36,8 +36,8 @@ const SearchPoll = ({ setPageNo }: Props) => {
 				<ul className='searchResults'>
 					{polls.map((p, i) => (
 						<li key={i} className='result'>
-							<span>{p.title}</span>
-							<span>{p.state}</span>
+							<span className='search-span'>{p.title}</span>
+							<span className='search-span'>{p.state}</span>
 						</li>
 					))}
 				</ul>
