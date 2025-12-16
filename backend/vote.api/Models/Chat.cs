@@ -10,7 +10,7 @@ public class Chat
 
     public string Message { get; set; } = string.Empty;
 
-    public int? ChatRoomId { get; set; }
+    public int ChatRoomId { get; set; }
 
     public ChatRoom? ChatRoom { get; set; } = null!;
 }

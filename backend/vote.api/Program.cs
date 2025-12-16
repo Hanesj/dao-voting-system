@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using vote.api.Data;
 using vote.api.Hubs;
+using vote.api.Interfaces;
+using vote.api.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +24,10 @@ builder.Services.AddDbContext<AppDBContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddScoped<IChatRepository, ChatRepository>();
+
+
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
