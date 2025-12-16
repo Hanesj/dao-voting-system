@@ -1,4 +1,5 @@
-namespace stock.api.Dtos;
+namespace vote.api.Dtos;
+
 
 public record CreateLogDto
 {

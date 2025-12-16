@@ -1,7 +1,7 @@
-using stock.api.Dtos;
+using vote.api.Dtos;
 using vote.api.Models;
 
-namespace stock.api.Mappers;
+namespace vote.api.Mappers;
 
 public static class LogMapper
 {

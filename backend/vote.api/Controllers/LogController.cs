@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
-using stock.api.Dtos;
-using stock.api.Mappers;
+using vote.api.Dtos;
+using vote.api.Mappers;
 
 namespace vote.api.Controllers;
 

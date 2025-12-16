@@ -4,7 +4,8 @@ form {
 input {
 	padding: '0.5rem';
 	border-radius: 6;
-	border: '1px solid #ccc';
+
+	border: 1px solid #000000;
 	width: '100%';
 	margin-top: '0.25rem';
 	margin-bottom: '0.5rem';

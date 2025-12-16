@@ -5,10 +5,10 @@ import PollCard from './components/PollCard/PollCard';
 import { useWallet } from './hooks/useWallet';
 import { usePollsContext } from './context/PollsContext';
 import SearchPoll from './components/SearchPoll/SearchPoll';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Navbar from './components/navbar/Navbar';
+import ChatClient from './components/ChatClient/ChatClient';
 function App() {
-	const { connectWallet } = useWallet();
 	const { polls, addPoll, masterPolls } = usePollsContext();
 	const [pageNo, setPageNo] = useState<number>(0);
 	const itemsPerPage = 2;
@@ -32,22 +32,25 @@ function App() {
 		<>
 			{/* <Navbar /> */}
 			<h1 className='control-section-title'>Find and Create Polls</h1>
-			<div className='container'>
-				{/* <button className='button' onClick={connectWallet}>
-					Connect Wallet
-				</button> */}
+			<div className='main-page'>
+				<div className='container'>
+					{/* <button className='button' onClick={connectWallet}>
+						Connect Wallet
+					</button> */}
 
-				{/* <CreatePollForm addPoll={addPoll} /> */}
-				<div className='searchBar'>
-					<SearchPoll setPageNo={setPageNo} />
+					{/* <CreatePollForm addPoll={addPoll} /> */}
+					<div className='searchBar'>
+						<SearchPoll setPageNo={setPageNo} />
+					</div>
+					<br />
+					<CreatePollForm addPoll={addPoll} />
+
+					{pollsPerPage.length > 0 &&
+						pollsPerPage.map((poll) => (
+							<PollCard key={poll.address} poll={poll} />
+						))}
 				</div>
-				<br />
-				<CreatePollForm addPoll={addPoll} />
-
-				{pollsPerPage.length > 0 &&
-					pollsPerPage.map((poll) => (
-						<PollCard key={poll.address} poll={poll} />
-					))}
+				<ChatClient />
 			</div>
 
 			<div className='pagination'>
