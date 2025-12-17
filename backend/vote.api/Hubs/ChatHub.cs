@@ -37,4 +37,15 @@ public class ChatHub : Hub
 
         // await Clients.Group(chatRoom).SendAsync("ReceiveMessage", "admin", $"{userName} has joined {chatRoom}, previous chats:\n {readableChat}");
     }
+    public async Task AllChatRooms()
+    {
+        var numOfRooms = await _context.ChatRooms.CountAsync();
+
+        var roomNames = await _context.ChatRooms.Select(r => new ChatRoomDto
+        {
+            ChatRoomTitle = r.ChatRoomTitle
+        }).ToListAsync();
+
+        await Clients.All.SendAsync("ReceiveRooms", numOfRooms, roomNames);
+    }
 }
