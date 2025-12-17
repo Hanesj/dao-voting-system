@@ -1,13 +1,9 @@
 import './App.css';
 // mport Navbar from './components/navbar/Navbar';
-import CreatePollForm from './components/CreatePollForm/CreatePollForm';
-import PollCard from './components/PollCard/PollCard';
-import { useWallet } from './hooks/useWallet';
 import { usePollsContext } from './context/PollsContext';
-import SearchPoll from './components/SearchPoll/SearchPoll';
 import { useState } from 'react';
-import Navbar from './components/navbar/Navbar';
-import ChatClient from './components/ChatClient/ChatClient';
+import Pagination from './components/Pagination';
+import MainComponent from './components/MainComponent';
 function App() {
 	const { polls, addPoll, masterPolls } = usePollsContext();
 	const [pageNo, setPageNo] = useState<number>(0);
@@ -15,8 +11,8 @@ function App() {
 	//const { addOptionToPoll, addVote, openVoting } = usePoll();
 
 	const totalNumberOfPages = Math.ceil(masterPolls.length / itemsPerPage);
-	const hasNextPage = pageNo < totalNumberOfPages - 1;
 
+	const hasNextPage = pageNo < totalNumberOfPages - 1;
 	const startIndex = pageNo * itemsPerPage;
 	const endIndex = startIndex + itemsPerPage;
 	const pollsPerPage = polls.slice(startIndex, endIndex);
@@ -32,36 +28,17 @@ function App() {
 		<>
 			{/* <Navbar /> */}
 			<h1 className='control-section-title'>Find and Create Polls</h1>
-			<div className='main-page'>
-				<div className='container'>
-					{/* <button className='button' onClick={connectWallet}>
-						Connect Wallet
-					</button> */}
+			<MainComponent
+				addPoll={addPoll}
+				pollsPerPage={pollsPerPage}
+				setPageNo={setPageNo}
+			/>
 
-					{/* <CreatePollForm addPoll={addPoll} /> */}
-					<div className='searchBar'>
-						<SearchPoll setPageNo={setPageNo} />
-					</div>
-					<br />
-					<CreatePollForm addPoll={addPoll} />
-
-					{pollsPerPage.length > 0 &&
-						pollsPerPage.map((poll) => (
-							<PollCard key={poll.address} poll={poll} />
-						))}
-				</div>
-				<ChatClient />
-			</div>
-
-			<div className='pagination'>
-				{pageNo > 0 && (
-					<button onClick={() => handleClick(-1)}>&lt;</button>
-				)}
-				<p>{pageNo + 1}</p>
-				{hasNextPage && (
-					<button onClick={() => handleClick(1)}>&gt;</button>
-				)}
-			</div>
+			<Pagination
+				handleClick={handleClick}
+				hasNextPage={hasNextPage}
+				pageNo={pageNo}
+			/>
 		</>
 	);
 }

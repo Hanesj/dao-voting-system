@@ -25,7 +25,7 @@ body {
 
 .container {
 	max-width: 1000px; /* Begränsa bredden för bättre läsbarhet */
-	margin: 0 auto;
+	/* margin: 0 auto; */
 	/* padding: 2rem; */
 }
 

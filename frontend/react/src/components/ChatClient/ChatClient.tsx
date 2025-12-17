@@ -108,8 +108,8 @@ const ChatClient = (props: Props) => {
 	};
 
 	return (
-		<div className='flex flex-col mt-42 mr-10 max-h-110 rounded-lg '>
-			<main className='max-w-110 max-w-4xl mx-auto flex flex-col flex-1 bg-white rounded-lg '>
+		<div className='flex flex-col mr-5 max-h-100 rounded-lg '>
+			<main className='max-w-110 max-w-4xl mx-auto flex flex-col flex-1 bg-white rounded-lg'>
 				{loading ? (
 					<LoadingState />
 				) : connection && chatRoom != '' ? (
@@ -123,23 +123,23 @@ const ChatClient = (props: Props) => {
 					</>
 				) : (
 					<div className='flex items-center justify-center bg-gray-100 p-4'>
-						<div className='max-w-md bg-white rounded-xl shadow-2xl p-6 sm:p-8 border border-gray-200'>
+						<div className='max-w-md bg-white rounded-xl shadow-2xl p-6 sm:p-8 '>
 							<h2 className='text-3xl font-bold text-gray-800 mb-6 text-center'>
-								Chat Portal
+								Chat
 							</h2>
 
 							<div className='bg-gray-50 rounded-lg p-4 mb-6 border border-gray-200'>
 								<h4 className='text-lg font-semibold text-gray-700 mb-3'>
-									Tillgängliga Rum:
+									Chatrooms:
 								</h4>
 
-								<ul className='flex flex-wrap gap-3'>
+								<ul className='flex flex-wrap gap-1'>
 									{chatRooms.map((cr) => (
 										<li
 											key={cr.chatRoomTitle} // OBS: Lägg till en unik 'key' om den saknas!
 											className='
                             w-20 text-center p-3 
-                            bg-blue-500 hover:bg-blue-600 transition duration-150 ease-in-out 
+                            bg-blue-400 hover:bg-blue-600 transition duration-150 ease-in-out 
                             text-white font-medium rounded-lg shadow-md cursor-pointer 
                             text-sm
                         '
@@ -191,7 +191,7 @@ const ChatClient = (props: Props) => {
 									onClick={() =>
 										createChatRoom(userName, newChatRoom)
 									}>
-									Skapa Nytt Chattrum
+									Create new room
 								</button>
 							</div>
 						</div>

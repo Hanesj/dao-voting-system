@@ -172,3 +172,17 @@ h1 {
 
 	text-transform: uppercase; /* Gör texten mer formell */
 }
+/* Döljer scrollisten för containern med klassen 'hide-scrollbar' */
+.hide-scrollbar::-webkit-scrollbar {
+	/* Gör scrollisten helt transparent */
+	display: none;
+	/* Eller width: 0; för att ta bort utrymmet */
+	width: 0;
+}
+
+/* Du kan också lägga till detta i din globala CSS-fil för alla WebKit-baserade webbläsare: */
+/* Om du vill att listan ska vara scrollbar men utan scrollist, använd denna */
+.hide-scrollbar {
+	-ms-overflow-style: none; /* Döljer scrollisten i IE och Edge */
+	scrollbar-width: none; /* För Firefox (se Lösning 2 nedan) */
+}

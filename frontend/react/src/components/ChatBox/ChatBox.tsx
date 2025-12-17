@@ -40,10 +40,9 @@ const ChatBox = ({ sendMessage, setMessages, exitRoom }: Props) => {
 			className='
 	p-3 
 	bg-white/90 backdrop-blur 
-	border-t border-gray-200 
 	shadow-[0_-4px_20px_rgba(0,0,0,0.05)] 
 	sticky bottom-0 z-10
-rounded-lg'>
+rounded-2xl'>
 			<div className='flex items-end gap-3'>
 				{/* Textarea */}
 				<textarea

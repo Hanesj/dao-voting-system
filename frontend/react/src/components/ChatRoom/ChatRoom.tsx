@@ -10,7 +10,7 @@ const ChatRoom = ({ messages, chatRoom }: Props) => {
 	// }, [messages]);
 
 	return (
-		<div className='h-full p-4 overflow-y-scroll bg-white shadow-lg max-h-110 min-w-110'>
+		<div className='h-full p-4 overflow-y-scroll bg-white shadow-lg max-h-110 min-w-95 rounded-lg'>
 			<div
 				className='
 	sticky top-0 z-20 
