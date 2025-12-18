@@ -23,12 +23,11 @@ const FilterPolls = ({ setPageNo }: Props) => {
 		setFilter(filterClicked);
 		setPageNo(0);
 	};
-	console.log(polls.map((p) => p.state));
 	return (
-		<div className='flex flex-col gap-0 p-3 w-64 max-h-188 bg-white shadow-xl rounded-lg '>
+		<div className='flex flex-col gap-0 p-3 w-64 max-h-188 bg-white shadow-xl rounded-lg'>
 			{/* --- 1. Navigeringsfilter (Filtrera efter Status) --- */}
 			<ul className='flex flex-col gap-2'>
-				<h4 className='font-bold text-gray-700 mb-1 px-1'>Filter</h4>
+				<h4 className='font-bolder text-gray-700 mb-1 px-1'>Filter</h4>
 
 				{/* 'Ongoing' Knapp (Aktiv/Huvudfokus) */}
 				<li
@@ -39,7 +38,7 @@ const FilterPolls = ({ setPageNo }: Props) => {
 					filter.includes('Ongoing') ? 'bg-blue-300' : 'bg-gray-200'
 				} text-white rounded-lg 
                 cursor-pointer hover:bg-blue-500 transition duration-150
-                font-semibold
+                font-medium
             `}
 					onClick={(e: React.MouseEvent<HTMLLIElement>) =>
 						handleFilter(e.currentTarget.textContent || '')

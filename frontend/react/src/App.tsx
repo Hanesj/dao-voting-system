@@ -27,7 +27,7 @@ function App() {
 	return (
 		<>
 			{/* <Navbar /> */}
-			<h1 className='control-section-title'>Find and Create Polls</h1>
+			<h1>Find and Create Polls</h1>
 			<MainComponent
 				addPoll={addPoll}
 				pollsPerPage={pollsPerPage}

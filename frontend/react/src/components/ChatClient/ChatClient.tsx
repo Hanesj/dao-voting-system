@@ -53,6 +53,9 @@ const ChatClient = (props: Props) => {
 					...prevChats,
 				]);
 			});
+			newConnection.on('NewPollReceived', (poll) => {
+				console.log(JSON.stringify(poll));
+			});
 
 			await newConnection.start();
 			await newConnection.invoke('AllChatRooms');
@@ -108,7 +111,7 @@ const ChatClient = (props: Props) => {
 	};
 
 	return (
-		<div className='flex flex-col mr-5 max-h-100 rounded-lg '>
+		<div className='flex flex-col max-h-100 rounded-lg'>
 			<main className='max-w-110 max-w-4xl mx-auto flex flex-col flex-1 bg-white rounded-lg'>
 				{loading ? (
 					<LoadingState />

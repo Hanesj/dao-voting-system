@@ -3,6 +3,7 @@ using vote.api.Data;
 using vote.api.Hubs;
 using vote.api.Interfaces;
 using vote.api.Repository;
+using vote.api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,7 @@ builder.Services.AddDbContext<AppDBContext>(options =>
 });
 
 builder.Services.AddScoped<IChatRepository, ChatRepository>();
+builder.Services.AddHostedService<PollWatcher>();
 
 
 var app = builder.Build();
