@@ -1,11 +1,14 @@
 
+using System.Collections.Concurrent;
 using System.Numerics;
 using Microsoft.AspNetCore.SignalR;
+using Nethereum.Contracts;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Web3;
 using vote.api.Dtos;
 using vote.api.Hubs;
+using vote.api.Models;
 
 namespace vote.api.Services;
 
@@ -15,6 +18,9 @@ public class PollWatcher : BackgroundService
 
     private readonly string _rpcUrl = "http://127.0.0.1:8545";
     private readonly IHubContext<ChatHub> _hubContext;
+    private readonly ConcurrentDictionary<string, PollData> _polls = new();
+
+
 
     public PollWatcher(IHubContext<ChatHub> hubContext)
     {
@@ -33,7 +39,11 @@ public class PollWatcher : BackgroundService
         //     return;
         // }
         var web3 = new Web3(_rpcUrl);
-        var eventHandler = web3.Eth.GetEvent<PollCreatedEventDto>(_contractAddress);
+        var pollCreated = web3.Eth.GetEvent<PollCreatedEventDto>(_contractAddress);
+        // Event<NewVoteEventDto> newVoteEvent = web3.Eth.GetEvent<NewVoteEventDto>();
+
+
+        
 
         HexBigInteger lastBlock = await web3.Eth.Blocks.GetBlockNumber.SendRequestAsync();
 
@@ -47,17 +57,22 @@ public class PollWatcher : BackgroundService
 
                 if (latestBlock.Value > lastBlock.Value)
                 {
-                    var filter = eventHandler.CreateFilterInput(
+                    var filter = pollCreated.CreateFilterInput(
                         new BlockParameter(new HexBigInteger(lastBlock.Value + 1)),
                         new BlockParameter(latestBlock)
                     );
 
-                    var changes = await eventHandler.GetAllChangesAsync(filter);
+                    var changes = await pollCreated.GetAllChangesAsync(filter);
 
                     foreach (var log in changes)
                     {
                         var poll = log.Event;
-
+                        _polls[poll.PollAddres] = new PollData{
+                            Title = poll.PollTitle, 
+                            CreatedBy = poll.CreatedBy, 
+                            VoteCount = 0
+                            };
+                        
                         Console.WriteLine($"New poll: {poll.PollTitle}");
 
                         await _hubContext.Clients.All.SendAsync(
@@ -65,6 +80,30 @@ public class PollWatcher : BackgroundService
                             poll
                         );
                     }
+
+                    foreach(var key in _polls.Keys)
+                    {
+
+                        var newVoteEvent = web3.Eth.GetEvent<NewVoteEventDto>(key);
+                        System.Console.WriteLine($"Address: {key}");
+                        var voteFilter = newVoteEvent.CreateFilterInput(
+                            new BlockParameter(new HexBigInteger(lastBlock.Value + 1)),
+                            new BlockParameter(latestBlock)
+                        );
+    
+                        var voteChanges = await newVoteEvent.GetAllChangesAsync(voteFilter);
+                        foreach(var log in voteChanges)
+                        {
+                        System.Console.WriteLine($"VoteCount {_polls[key].VoteCount}");
+                        System.Console.WriteLine($"VoteCount {log.Event}");
+                            await _hubContext.Clients.All.SendAsync("NewVoteReceived", new 
+                            {
+                                log.Event.OptionTitle,
+                                VoteCount = log.Event.VoteCount.ToString()
+                            });
+                        }
+                    }
+
 
                     lastBlock = latestBlock;
                 }

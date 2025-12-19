@@ -77,16 +77,9 @@ export const SignalRProvider = ({
             state: "Voting has not begun",
           },
         ]);
-        // setMasterPolls((polls) => [
-        //   ...polls,
-        //   {
-        //     address: poll.pollAddress,
-        //     title: poll.pollTitle,
-        //     owner: poll.createdBy,
-        //     options: [],
-        //     state: "Voting has not begun",
-        //   },
-        // ]);
+        newConnection.on("NewVoteReceived", (poll: any) => {
+          console.log(JSON.stringify(poll));
+        });
       });
 
       await newConnection.start();
