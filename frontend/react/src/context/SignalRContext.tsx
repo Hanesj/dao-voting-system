@@ -6,6 +6,8 @@ import type {
   SignalRActions,
   SignalRState,
 } from "../models/IUseChat";
+import { usePollsContext } from "./PollsContext";
+import type { Poll } from "../models/Poll";
 
 export interface SignalRContextValue {
   state: SignalRState;
@@ -30,7 +32,9 @@ export const SignalRProvider = ({
   //   const [loading, setLoading] = useState<boolean>(false);
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
   const [isConnected, setIsConnected] = useState<boolean>(false);
-  const [newChatRoom, setNewChatRoom] = useState<string>("");
+  //   const [newChatRoom, setNewChatRoom] = useState<string>("");
+
+  const { setPolls, polls, setMasterPolls } = usePollsContext();
 
   useEffect(() => {
     const connectSignalR = async () => {
@@ -61,8 +65,28 @@ export const SignalRProvider = ({
           ...prevChats,
         ]);
       });
-      newConnection.on("NewPollReceived", (poll) => {
+      newConnection.on("NewPollReceived", (poll: any) => {
         console.log(JSON.stringify(poll));
+        setPolls((polls) => [
+          ...polls,
+          {
+            address: poll.pollAddress,
+            title: poll.pollTitle,
+            owner: poll.createdBy,
+            options: [],
+            state: "Voting has not begun",
+          },
+        ]);
+        // setMasterPolls((polls) => [
+        //   ...polls,
+        //   {
+        //     address: poll.pollAddress,
+        //     title: poll.pollTitle,
+        //     owner: poll.createdBy,
+        //     options: [],
+        //     state: "Voting has not begun",
+        //   },
+        // ]);
       });
 
       await newConnection.start();

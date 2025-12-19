@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState, type SyntheticEvent } from "react";
+import { useRef, useState } from "react";
 
-import * as SignalR from "@microsoft/signalr";
 import ChatRoomComponent from "../ChatRoom/ChatRoomComponent";
 import ChatBox from "../ChatBox/ChatBox";
 import LoadingState from "../LoadingState";
@@ -9,60 +8,12 @@ import { useSignalRContext } from "../../context/SignalRContext";
 type Props = {};
 
 const ChatClient = (props: Props) => {
-  // const [connection, setConnection] = useState<SignalR.HubConnection | null>(
-  // 	null
-  // );
-  // const [messages, setMessages] = useState<Record<string, string>[]>([]);
-  // const [userName, setUserName] = useState<string>('');
-  // const [chatRoom, setChatRoom] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  // const [chatRooms, setChatRooms] = useState<Record<string, string>[]>([]);
   const [newChatRoom, setNewChatRoom] = useState<string>("");
 
   const { state, actions } = useSignalRContext();
   const userNameRef = useRef<HTMLInputElement>(null);
   const chatRoomRef = useRef<HTMLInputElement>(null);
-
-  //   useEffect(() => {
-  //     const connectSignalR = async () => {
-  //       const newConnection = new SignalR.HubConnectionBuilder()
-  //         .withUrl("http://localhost:5037/chathub")
-  //         .withAutomaticReconnect()
-  //         .build();
-
-  //       newConnection.on(
-  //         "ReceiveRooms",
-  //         (numOfRooms: number, roomNames: Record<string, string>[]) => {
-  //           console.log(
-  //             `Num of rooms: ${numOfRooms}, roomnames:\n${roomNames.map(
-  //               (r) => r.chatRoomTitle
-  //             )}`
-  //           );
-  //           setChatRooms(roomNames);
-  //         }
-  //       );
-  //       newConnection.on("ReceiveMessage", (userName, message) => {
-  //         console.log(`Message: ${message} from userName: ${userName}`);
-  //         setMessages((prevMessages) => [...prevMessages, { userName, message }]);
-  //       });
-  //       newConnection.on("ReceiveHistory", (prevChats) => {
-  //         console.log(`${JSON.stringify(prevChats)}`);
-  //         setMessages([
-  //           { userName: "admin", message: "Welcome to the chatroom." },
-  //           ...prevChats,
-  //         ]);
-  //       });
-  //       newConnection.on("NewPollReceived", (poll) => {
-  //         console.log(JSON.stringify(poll));
-  //       });
-
-  //       await newConnection.start();
-  //       await newConnection.invoke("AllChatRooms");
-  //       setConnection(newConnection);
-  //     };
-
-  //     connectSignalR();
-  //   }, []);
 
   const joinChatRoom = async (userName: string, chatRoom: string) => {
     if (userName === "" && userNameRef.current) {
@@ -71,10 +22,6 @@ const ChatClient = (props: Props) => {
     }
 
     setLoading(true);
-    // if (connection) {
-    //   await connection.invoke("JoinChatRoom", userName, chatRoom);
-    //   setChatRoom(chatRoom);
-    // }
     await actions.joinChatRoom(chatRoom);
 
     setLoading(false);
@@ -90,26 +37,16 @@ const ChatClient = (props: Props) => {
       return;
     }
     setLoading(true);
-    // if (connection) {
-    //   await connection.invoke("JoinChatRoom", userName, chatRoom);
-    //   setChatRoom(chatRoom);
     await actions.joinChatRoom(newChatRoom);
     setNewChatRoom("");
     setLoading(false);
   };
 
   const sendMessage = async (message: string) => {
-    // if (connection) {
-    //   await connection.invoke("SendMessage", userName, message, chatRoom);
-    // }
     await actions.sendMessage(message);
   };
 
   const exitRoom = async () => {
-    // setChatRoom("");
-    // if (connection) {
-    //   await connection.invoke("AllChatRooms");
-    // }
     await actions.leaveChatRoom();
   };
 
