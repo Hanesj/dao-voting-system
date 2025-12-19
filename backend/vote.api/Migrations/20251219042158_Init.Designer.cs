@@ -11,8 +11,8 @@ using vote.api.Data;
 namespace vote.api.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20251215025454_ChatSchema")]
-    partial class ChatSchema
+    [Migration("20251219042158_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
