@@ -70,7 +70,8 @@ public class PollWatcher : BackgroundService
                         _polls[poll.PollAddres] = new PollData{
                             Title = poll.PollTitle, 
                             CreatedBy = poll.CreatedBy, 
-                            VoteCount = 0
+                            VoteCount = 0,
+                            LastProcessedBlock = lastBlock.Value
                             };
                         
                         Console.WriteLine($"New poll: {poll.PollTitle}");
@@ -81,27 +82,26 @@ public class PollWatcher : BackgroundService
                         );
                     }
 
-                    foreach(var key in _polls.Keys)
+                    foreach(var poll in _polls.ToList())
                     {
+                        var pollAddress = poll.Key;
+                        var pollData = poll.Value;
 
-                        var newVoteEvent = web3.Eth.GetEvent<NewVoteEventDto>(key);
-                        System.Console.WriteLine($"Address: {key}");
+                        var newVoteEvent = web3.Eth.GetEvent<NewVoteEventDto>(pollAddress);
+                        System.Console.WriteLine($"Address: {pollAddress}");
                         var voteFilter = newVoteEvent.CreateFilterInput(
-                            new BlockParameter(new HexBigInteger(lastBlock.Value + 1)),
+                            new BlockParameter(new HexBigInteger(pollData.LastProcessedBlock + 1)),
                             new BlockParameter(latestBlock)
                         );
     
                         var voteChanges = await newVoteEvent.GetAllChangesAsync(voteFilter);
                         foreach(var log in voteChanges)
                         {
-                        System.Console.WriteLine($"VoteCount {_polls[key].VoteCount}");
                         System.Console.WriteLine($"VoteCount {log.Event}");
-                            await _hubContext.Clients.All.SendAsync("NewVoteReceived", new 
-                            {
-                                log.Event.OptionTitle,
-                                VoteCount = log.Event.VoteCount.ToString()
-                            });
+                            await _hubContext.Clients.All.SendAsync("NewVoteReceived","New vote");
                         }
+
+                        pollData.LastProcessedBlock = latestBlock.Value;
                     }
 
 

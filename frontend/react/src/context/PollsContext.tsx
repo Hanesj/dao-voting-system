@@ -19,6 +19,7 @@ export interface PollsContextValue {
   addPoll: (title: string) => Promise<void>;
   setPolls: React.Dispatch<React.SetStateAction<Poll[]>>;
   setMasterPolls: React.Dispatch<React.SetStateAction<Poll[]>>;
+  getPolls: () => Promise<void>;
 }
 
 const PollsContext = createContext<PollsContextValue | undefined>(undefined);
@@ -62,8 +63,8 @@ export const PollsProvider = ({ children }: { children: React.ReactNode }) => {
         }
         //console.log(`Address of pollcontract: ${a}`);
         if (pollsOnChain.length > 0) {
-          setPolls(pollsOnChain);
-          setMasterPolls(pollsOnChain);
+          setPolls([...pollsOnChain]);
+          setMasterPolls([...pollsOnChain]);
         }
       } catch (error) {
         console.log(error);
@@ -139,6 +140,7 @@ export const PollsProvider = ({ children }: { children: React.ReactNode }) => {
     setPolls,
     masterPolls,
     setMasterPolls,
+    getPolls,
   };
 
   return (

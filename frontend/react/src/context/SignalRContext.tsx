@@ -34,7 +34,7 @@ export const SignalRProvider = ({
   const [isConnected, setIsConnected] = useState<boolean>(false);
   //   const [newChatRoom, setNewChatRoom] = useState<string>("");
 
-  const { setPolls, polls, setMasterPolls } = usePollsContext();
+  const { getPolls } = usePollsContext();
 
   useEffect(() => {
     const connectSignalR = async () => {
@@ -67,21 +67,16 @@ export const SignalRProvider = ({
       });
       newConnection.on("NewPollReceived", (poll: any) => {
         console.log(JSON.stringify(poll));
-        setPolls((polls) => [
-          ...polls,
-          {
-            address: poll.pollAddress,
-            title: poll.pollTitle,
-            owner: poll.createdBy,
-            options: [],
-            state: "Voting has not begun",
-          },
-        ]);
-        newConnection.on("NewVoteReceived", (poll: any) => {
-          console.log(JSON.stringify(poll));
-        });
+        getPolls();
       });
 
+      newConnection.on("NewVoteReceived", (poll: any) => {
+        console.log(JSON.stringify(poll));
+        getPolls();
+      });
+      newConnection.onreconnected(() => {
+        getPolls();
+      });
       await newConnection.start();
       await newConnection.invoke("AllChatRooms");
       setConnection(newConnection);

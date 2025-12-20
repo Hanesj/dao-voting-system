@@ -1,3 +1,5 @@
+using System.Numerics;
+
 namespace vote.api.Models;
 
 public class PollData
@@ -6,5 +8,7 @@ public class PollData
     public string CreatedBy {get; set;}
 
     public int VoteCount {get; set;}
+
+    public BigInteger LastProcessedBlock {get; set;}
 
 }
