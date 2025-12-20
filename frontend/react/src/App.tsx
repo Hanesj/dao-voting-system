@@ -11,6 +11,7 @@ function App() {
   const {
     state: { isModalOpen },
     actions: { showModal },
+    modalMessage,
   } = useSignalRContext();
   const [pageNo, setPageNo] = useState<number>(0);
   const itemsPerPage = 2;
@@ -46,7 +47,11 @@ function App() {
       <div>
         <h1>Find and Create Polls</h1>
 
-        <Toast isOpen={isModalOpen} message="Test" onClose={showModal} />
+        <Toast
+          isOpen={isModalOpen}
+          message={modalMessage}
+          onClose={showModal}
+        />
       </div>
       <MainComponent
         addPoll={addPoll}

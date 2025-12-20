@@ -31,7 +31,7 @@ const Toast = ({ isOpen, message, onClose, duration = 5000 }: ToastProps) => {
 
         {/* Text */}
         <div className="flex-1">
-          <p className="text-sm font-medium text-gray-900">{message}</p>
+          <p className="text-lg font-semibold text-gray-900">{message}</p>
         </div>
 
         {/* Stäng-knapp */}

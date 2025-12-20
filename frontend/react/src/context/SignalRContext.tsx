@@ -12,6 +12,7 @@ import type { Poll } from "../models/Poll";
 export interface SignalRContextValue {
   state: SignalRState;
   actions: SignalRActions;
+  modalMessage: string;
 }
 
 const SignalRContext = createContext<SignalRContextValue | undefined>(
@@ -34,6 +35,7 @@ export const SignalRProvider = ({
   const [isConnected, setIsConnected] = useState<boolean>(false);
   //   const [newChatRoom, setNewChatRoom] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [modalMessage, setModalMessage] = useState<string>("");
 
   const { getPolls } = usePollsContext();
 
@@ -70,7 +72,9 @@ export const SignalRProvider = ({
 
       newConnection.on("NewPollReceived", (poll: any) => {
         console.log(JSON.stringify(poll));
+        // console.log(poll);
         setIsModalOpen(true);
+        setModalMessage(`Poll: ${poll} has been created.`);
         getPolls();
       });
 
@@ -81,6 +85,8 @@ export const SignalRProvider = ({
 
       newConnection.on("VotingStarted", (title) => {
         console.log(JSON.stringify(title), " has started voting");
+        setModalMessage(`Poll: ${title.pollTitle} is open for voting.`);
+        setIsModalOpen(true);
         getPolls();
       });
 
@@ -126,6 +132,7 @@ export const SignalRProvider = ({
 
   const showModal = () => {
     setIsModalOpen(false);
+    setModalMessage("");
   };
 
   const state = {
@@ -150,6 +157,7 @@ export const SignalRProvider = ({
   const values = {
     state,
     actions,
+    modalMessage,
   };
 
   return (

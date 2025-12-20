@@ -60,7 +60,7 @@ body {
 } */
 .card {
   /* Använd en semi-transparent mörk färg istället för vit */
-  background-color: rgb(175, 189, 211);
+  background-color: rgb(253, 254, 255);
 
   /* Frostat glas-effekt (magin som gör det modernt) */
   backdrop-filter: blur(12px);
