@@ -1,11 +1,17 @@
 import "./App.css";
 // mport Navbar from './components/navbar/Navbar';
 import { usePollsContext } from "./context/PollsContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Pagination from "./components/Pagination";
 import MainComponent from "./components/MainComponent";
+import Toast from "./components/PopupModal/Toast";
+import { useSignalRContext } from "./context/SignalRContext";
 function App() {
   const { polls, addPoll, masterPolls } = usePollsContext();
+  const {
+    state: { isModalOpen },
+    actions: { showModal },
+  } = useSignalRContext();
   const [pageNo, setPageNo] = useState<number>(0);
   const itemsPerPage = 2;
   //const { addOptionToPoll, addVote, openVoting } = usePoll();
@@ -24,10 +30,24 @@ function App() {
     // console.log('Klick?');
   };
 
+  useEffect(() => {
+    if (isModalOpen) {
+      const timer = setTimeout(() => {
+        showModal();
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isModalOpen]);
+
   return (
     <>
       {/* <Navbar /> */}
-      <h1>Find and Create Polls</h1>
+      <div>
+        <h1>Find and Create Polls</h1>
+
+        <Toast isOpen={isModalOpen} message="Test" onClose={showModal} />
+      </div>
       <MainComponent
         addPoll={addPoll}
         pollsPerPage={pollsPerPage}

@@ -33,6 +33,7 @@ export const SignalRProvider = ({
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
   const [isConnected, setIsConnected] = useState<boolean>(false);
   //   const [newChatRoom, setNewChatRoom] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const { getPolls } = usePollsContext();
 
@@ -58,6 +59,7 @@ export const SignalRProvider = ({
         console.log(`Message: ${message} from userName: ${userName}`);
         setMessages((prevMessages) => [...prevMessages, { userName, message }]);
       });
+
       newConnection.on("ReceiveHistory", (prevChats) => {
         console.log(`${JSON.stringify(prevChats)}`);
         setMessages([
@@ -65,8 +67,10 @@ export const SignalRProvider = ({
           ...prevChats,
         ]);
       });
+
       newConnection.on("NewPollReceived", (poll: any) => {
         console.log(JSON.stringify(poll));
+        setIsModalOpen(true);
         getPolls();
       });
 
@@ -74,6 +78,17 @@ export const SignalRProvider = ({
         console.log(JSON.stringify(poll));
         getPolls();
       });
+
+      newConnection.on("VotingStarted", (title) => {
+        console.log(JSON.stringify(title), " has started voting");
+        getPolls();
+      });
+
+      newConnection.on("NewOption", (title) => {
+        console.log(title);
+        getPolls();
+      });
+
       newConnection.onreconnected(() => {
         getPolls();
       });
@@ -109,6 +124,10 @@ export const SignalRProvider = ({
     }
   };
 
+  const showModal = () => {
+    setIsModalOpen(false);
+  };
+
   const state = {
     connection,
     messages,
@@ -116,6 +135,7 @@ export const SignalRProvider = ({
     userName,
     chatRoom,
     isConnected,
+    isModalOpen,
   };
 
   const actions = {
@@ -124,6 +144,7 @@ export const SignalRProvider = ({
     leaveChatRoom,
     setUserName,
     clearChatHistory,
+    showModal,
   };
 
   const values = {

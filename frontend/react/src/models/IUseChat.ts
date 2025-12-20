@@ -15,6 +15,7 @@ export interface SignalRState {
   chatRoom: string | null;
   userName: string | null;
   isConnected: boolean;
+  isModalOpen: boolean;
 }
 
 export interface SignalRActions {
@@ -23,4 +24,5 @@ export interface SignalRActions {
   sendMessage: (message: string) => Promise<void>;
   setUserName: React.Dispatch<SetStateAction<string>>;
   clearChatHistory: () => void;
+  showModal: () => void;
 }

@@ -87,18 +87,43 @@ public class PollWatcher : BackgroundService
                         var pollAddress = poll.Key;
                         var pollData = poll.Value;
 
+                        
+
                         var newVoteEvent = web3.Eth.GetEvent<NewVoteEventDto>(pollAddress);
-                        System.Console.WriteLine($"Address: {pollAddress}");
+                        var votingStartedEvent = web3.Eth.GetEvent<VotingOpenedDto>(pollAddress);
+                        var newOptionEvent = web3.Eth.GetEvent<NewOptionEventDto>(pollAddress);
+                        
+                        // System.Console.WriteLine($"Address: {pollAddress}");
                         var voteFilter = newVoteEvent.CreateFilterInput(
                             new BlockParameter(new HexBigInteger(pollData.LastProcessedBlock + 1)),
                             new BlockParameter(latestBlock)
                         );
+
+                        var voteStartFilter = votingStartedEvent.CreateFilterInput(
+                            new BlockParameter(new HexBigInteger(pollData.LastProcessedBlock + 1)),
+                            new BlockParameter(latestBlock)
+                            );
+                        var newOptionFilter = newOptionEvent.CreateFilterInput(
+                            new BlockParameter(new HexBigInteger(pollData.LastProcessedBlock + 1)),
+                            new BlockParameter(latestBlock)
+                            );
     
                         var voteChanges = await newVoteEvent.GetAllChangesAsync(voteFilter);
+                        var votingEnabled = await votingStartedEvent.GetAllChangesAsync(voteStartFilter);
+                        var optionChanges = await newOptionEvent.GetAllChangesAsync(newOptionFilter);
                         foreach(var log in voteChanges)
                         {
                         System.Console.WriteLine($"VoteCount {log.Event}");
                             await _hubContext.Clients.All.SendAsync("NewVoteReceived","New vote");
+                        }
+                        foreach(var log in votingEnabled)
+                        {
+                            System.Console.WriteLine($"Poll: {log.Event} has started voting.");
+                            await _hubContext.Clients.All.SendAsync("VotingStarted", log.Event);
+                        }
+                        foreach(var log in optionChanges)
+                        {
+                            await _hubContext.Clients.All.SendAsync("NewOption", log.Event);
                         }
 
                         pollData.LastProcessedBlock = latestBlock.Value;
