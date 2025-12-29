@@ -11,6 +11,10 @@ export const useWallet = () => {
   const [wallet, setWallet] = useState<WalletClient | null>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false);
 
+  useEffect(() => {
+    if (localStorage.getItem("mm_account")) connectWallet();
+  }, []);
+
   const connectWallet = useCallback(async () => {
     if (!window.ethereum.isMetaMask) return alert("Endast metamask");
     const [account] = await window.ethereum!.request({
@@ -48,15 +52,16 @@ export const useWallet = () => {
 
     // console.log(wallet);
     // console.log(account);
-  }, [wallet]);
-  useEffect(() => {
-    connectWallet();
-    setIsConnected(true);
-  }, []);
+  }, [isConnected]);
+  // useEffect(() => {
+  //   connectWallet();
+  //   setIsConnected(true);
+  // }, []);
   const disconnectWallet = () => {
     setWallet(null);
     setIsConnected(false);
     localStorage.removeItem("mm_account");
+    window.location.reload();
   };
 
   return { wallet, connectWallet, isConnected, disconnectWallet };

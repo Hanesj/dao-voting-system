@@ -24,7 +24,7 @@ export interface PollsContextValue {
 
 const PollsContext = createContext<PollsContextValue | undefined>(undefined);
 export const PollsProvider = ({ children }: { children: React.ReactNode }) => {
-  const { connectWallet, wallet } = useWallet();
+  const { wallet } = useWallet();
   const [polls, setPolls] = useState<Poll[]>([
     {
       title: "Example Poll 1",

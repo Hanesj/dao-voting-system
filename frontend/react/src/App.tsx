@@ -48,7 +48,7 @@ function App() {
       {/* <Navbar /> */}
       <div>
         <div className="flex justify-between">
-          <h1 className="grow-1">Find and Create Polls</h1>
+          <h1>DAO4Dev</h1>
           <button
             onClick={disconnectWallet}
             className="max-h-10 self-center mr-45"

@@ -159,22 +159,18 @@ button:active {
 
 /* Den befintliga H2 som introducerar listan (Polls) */
 h1 {
-  /* Basstilar från tidigare: */
-  font-size: 3rem;
+  font-size: 3.5rem;
+  color: rgb(89, 139, 245);
   font-weight: 800;
-  color: #1a1a2e; /* Mycket mörk färg */
-  /* text-align: center; */
-  margin-top: 50px;
   margin-bottom: 40px;
   letter-spacing: 2px;
 
-  /* NY STYLING: Definierad Letterpress-effekt */
-  text-shadow: 
-        /* Ljus skugga (lyfter) - fungerar som en kontur */ 1px
-      1px 0 rgba(255, 255, 255, 0.9),
-    /* Mörkare skugga (trycker in) - ger djup */ 2px 2px 3px rgba(0, 0, 0, 0.4);
+  text-shadow: 1px 0 rgba(255, 255, 255, 0.9);
 
-  text-transform: uppercase; /* Gör texten mer formell */
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  margin-top: 1rem;
+  margin-left: 10rem;
 }
 /* Döljer scrollisten för containern med klassen 'hide-scrollbar' */
 .hide-scrollbar::-webkit-scrollbar {
@@ -190,8 +186,23 @@ h1 {
   -ms-overflow-style: none; /* Döljer scrollisten i IE och Edge */
   scrollbar-width: none; /* För Firefox (se Lösning 2 nedan) */
 }
-@media (max-width: 650px) {
+@media (max-width: 1000px) {
   .hide {
     display: none;
+  }
+  .main-page {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    min-width: 520px;
+
+    gap: 0;
+  }
+  h1 {
+    margin: 0;
+    margin-right: 1rem;
+    margin-left: 1rem;
+  }
+  h1 ~ button {
+    min-width: 15rem;
   }
 }

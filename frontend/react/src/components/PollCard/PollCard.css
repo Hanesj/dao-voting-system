@@ -105,11 +105,11 @@ body {
 }
 
 /* HUVUDTEXT (H3/H4) */
-h1 {
-  color: var(--color-text);
-  text-align: center;
+/* h1 {
   margin-bottom: 2rem;
-}
+  margin-top: 1rem;
+  margin-left: 10rem;
+} */
 h3 {
   /* Ta bort den starka bakgrundsfärgen, använd accentfärgen för titeln istället */
   color: var(--color-primary);

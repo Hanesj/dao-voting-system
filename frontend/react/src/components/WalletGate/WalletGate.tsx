@@ -1,4 +1,4 @@
-import React, { useEffect, useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { useWallet } from "../../hooks/useWallet";
 
 type Props = {
@@ -7,40 +7,25 @@ type Props = {
 
 const WalletGate = ({ children }: Props) => {
   const { isConnected, connectWallet } = useWallet();
-  const [walletConnected, setWalletConnected] = useState(false);
 
-  useEffect(() => {
-    const checkConnection = async () => {
-      if (localStorage.getItem("mm_account")) {
-        setWalletConnected(true);
-      }
-    };
-    checkConnection();
-  }, []);
-
-  const handleConnect = () => {
-    connectWallet();
-    setWalletConnected(true);
-  };
-  if (!walletConnected) {
+  if (!isConnected) {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
-        <div className="bg-white p-8 rounded-xl shadow-md text-center flex flex-col gap-7">
-          <h2
-            className="text-2xl font-bold bg-gray-400"
-            style={{ padding: "15px" }}
-          >
-            Connect your wallet.
+        <div className="bg-white p-10 rounded-2xl shadow-lg flex flex-col gap-6 items-center text-center max-w-md">
+          {/* Rubrik med gradient och premium-typografi */}
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 mb-4">
+            Connect your wallet
           </h2>
-          <p
-            className="text-gray-600 mb-6 bg-gray-200"
-            style={{ padding: "20px" }}
-          >
-            You need to connect your metamask wallet to use this app.
+
+          {/* Text med luftig, modern stil */}
+          <p className="text-gray-700 text-base sm:text-lg leading-relaxed mb-6">
+            You need to connect your MetaMask wallet to use this app.
           </p>
+
+          {/* Knappen behålls oförändrad */}
           <button
-            onClick={handleConnect}
-            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition"
+            onClick={connectWallet}
+            className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition duration-300"
           >
             Anslut MetaMask
           </button>
