@@ -1,9 +1,9 @@
 import type { SetStateAction } from "react";
-import ChatClient from "./ChatClient/ChatClient";
-import CreatePollForm from "./CreatePollForm/CreatePollForm";
-import SearchPoll from "./SearchPoll/SearchPoll";
-import PollCard from "./PollCard/PollCard";
-import FilterPolls from "./FilterPolls";
+import ChatClient from "../ChatClient/ChatClient";
+import CreatePollForm from "../CreatePollForm/CreatePollForm";
+import SearchPoll from "../SearchPoll/SearchPoll";
+import PollCard from "../PollCard/PollCard";
+import FilterPolls from "../FilterPolls/FilterPolls";
 
 type Props = {
   pollsPerPage: any[];

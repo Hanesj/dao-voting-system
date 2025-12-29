@@ -74,7 +74,7 @@ export const SignalRProvider = ({
         console.log(JSON.stringify(poll));
         // console.log(poll);
         setIsModalOpen(true);
-        setModalMessage(`Poll: ${poll} has been created.`);
+        setModalMessage(`Poll: "${poll.pollTitle}" has been created.`);
         getPolls();
       });
 

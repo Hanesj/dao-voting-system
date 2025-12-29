@@ -14,9 +14,11 @@ namespace vote.api.Services;
 
 public class PollWatcher : BackgroundService
 {
-    private readonly string _contractAddress = "0x700b6A60ce7EaaEA56F065753d8dcB9653dbAD35";
+    // private readonly string _contractAddress = "0x700b6A60ce7EaaEA56F065753d8dcB9653dbAD35";
+    private readonly string _contractAddress = "0xa330b99DC82bA69134C7082F4c254025B13FDCa7";
 
-    private readonly string _rpcUrl = "http://127.0.0.1:8545";
+    // private readonly string _rpcUrl = "http://127.0.0.1:8545";
+    private readonly string _rpcUrl = "https://eth-sepolia.g.alchemy.com/v2/WwmyBWYYAuWLTHY0KykCb";
     private readonly IHubContext<ChatHub> _hubContext;
     private readonly ConcurrentDictionary<string, PollData> _polls = new();
 

@@ -1,0 +1,7 @@
+forge create src/VotingFactory.sol:VotingFactory --rpc-url $SEPOLIA_RPC_URL --private-key $META_KEY --broadcast
+[⠊] Compiling...
+No files changed, compilation skipped
+Deployer: 0x5b7CbB456d4849D540D7263e4538c0bDb75aa0aD
+Deployed to: 0xa330b99DC82bA69134C7082F4c254025B13FDCa7
+Transaction hash: 0xccb009bf6b412ba5dfc84b86a9b5087a36e2738cbc271896ced1230777e5616b
+

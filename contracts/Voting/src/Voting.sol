@@ -69,7 +69,7 @@ contract Voting {
         require(state == VotingState.Ongoing, "Voting is not ongoing.");
         require(index < options.length);
         // Temporary users can vote multiple times
-        //require(!hasVoted[msg.sender], "Can only vote once.");
+        require(!hasVoted[msg.sender], "Can only vote once.");
         VoteOption storage option = options[index];
         option.voteCount += 1;
         hasVoted[msg.sender] = true;

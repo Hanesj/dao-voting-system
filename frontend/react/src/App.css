@@ -1,12 +1,12 @@
 /* src/index.css */
-@import 'tailwindcss';
+@import "tailwindcss";
 
 /* Box sizing */
 *,
 *::before,
 *::after {
-	box-sizing: border-box;
-	/* outline: solid 2px red; */
+  box-sizing: border-box;
+  /* outline: solid 2px red; */
 }
 
 /* Remove default margin/padding */
@@ -24,28 +24,28 @@ figure,
 blockquote,
 dl,
 dd {
-	margin: 0;
-	padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 /* Remove list styles */
 ol,
 ul {
-	list-style: none;
+  list-style: none;
 }
 
 /* Remove default quotes in blockquote and q */
 blockquote,
 q {
-	quotes: none;
+  quotes: none;
 }
 
 blockquote::before,
 blockquote::after,
 q::before,
 q::after {
-	content: '';
-	content: none;
+  content: "";
+  content: none;
 }
 
 /* Set default body style */
@@ -61,20 +61,20 @@ q::after {
 /* Make images responsive */
 img,
 picture {
-	max-width: 100%;
-	display: block;
+  max-width: 100%;
+  display: block;
 }
 
 /* Remove border from links by default */
 a {
-	text-decoration: none;
-	color: inherit;
+  text-decoration: none;
+  color: inherit;
 }
 
 /* Tables */
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
 /* Form elements */
@@ -82,107 +82,116 @@ input,
 button,
 textarea,
 select {
-	font: inherit;
+  font: inherit;
 }
+/* body {
+  display: flex;
+  justify-content: center;
+} */
 .searchBar {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .pagination {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	gap: 2rem;
-	p {
-		font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-		font-size: larger;
-	}
-	margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  p {
+    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+    font-size: larger;
+  }
+  margin-bottom: 1rem;
 }
 button {
-	padding: 1.3em 3em;
-	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
-		'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-	font-size: 12px;
-	text-transform: uppercase;
-	letter-spacing: 2.5px;
-	color: #000;
-	background-color: #ececec;
-	border: none;
-	border-radius: 45px;
-	box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-	transition: all 0.3s ease 0s;
-	cursor: pointer;
-	outline: none;
+  padding: 1.3em 3em;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: #000;
+  background-color: #ececec;
+  border: none;
+  border-radius: 45px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
 }
 
 button:hover {
-	background-color: #23c483;
-	box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
-	color: #fff;
-	transform: translateY(-7px);
+  background-color: #23c483;
+  box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+  color: #fff;
+  transform: translateY(-7px);
 }
 
 button:active {
-	transform: translateY(-1px);
+  transform: translateY(-1px);
 }
 
 .open-vote-btn {
-	margin-top: 1rem;
+  margin-top: 1rem;
 }
 .no-options {
-	margin: 0.5rem 0;
+  margin: 0.5rem 0;
 }
 
 .main-page {
-	display: flex;
-	flex-direction: row;
-	gap: 2rem;
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  justify-content: center;
 }
 .control-section-title {
-	font-size: 1.5rem;
-	font-weight: 600;
-	color: #333333; /* Mörkgrå färg */
-	text-align: center; /* Centrera rubriken ovanför kontrollerna */
-	margin-top: 40px; /* Mer utrymme från headern */
-	margin-bottom: 25px; /* Avstånd till sökfältet */
-	/* Du kan lägga till en tunn linje om du vill: 
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333333; /* Mörkgrå färg */
+  text-align: center; /* Centrera rubriken ovanför kontrollerna */
+  margin-top: 40px; /* Mer utrymme från headern */
+  margin-bottom: 25px; /* Avstånd till sökfältet */
+  /* Du kan lägga till en tunn linje om du vill: 
     border-bottom: 2px solid #e0aaff;
     padding-bottom: 5px; */
 }
 
 /* Den befintliga H2 som introducerar listan (Polls) */
 h1 {
-	/* Basstilar från tidigare: */
-	font-size: 3rem;
-	font-weight: 800;
-	color: #1a1a2e; /* Mycket mörk färg */
-	text-align: center;
-	margin-top: 50px;
-	margin-bottom: 40px;
-	letter-spacing: 2px;
+  /* Basstilar från tidigare: */
+  font-size: 3rem;
+  font-weight: 800;
+  color: #1a1a2e; /* Mycket mörk färg */
+  /* text-align: center; */
+  margin-top: 50px;
+  margin-bottom: 40px;
+  letter-spacing: 2px;
 
-	/* NY STYLING: Definierad Letterpress-effekt */
-	text-shadow: 
+  /* NY STYLING: Definierad Letterpress-effekt */
+  text-shadow: 
         /* Ljus skugga (lyfter) - fungerar som en kontur */ 1px
-			1px 0 rgba(255, 255, 255, 0.9),
-		/* Mörkare skugga (trycker in) - ger djup */ 2px 2px 3px
-			rgba(0, 0, 0, 0.4);
+      1px 0 rgba(255, 255, 255, 0.9),
+    /* Mörkare skugga (trycker in) - ger djup */ 2px 2px 3px rgba(0, 0, 0, 0.4);
 
-	text-transform: uppercase; /* Gör texten mer formell */
+  text-transform: uppercase; /* Gör texten mer formell */
 }
 /* Döljer scrollisten för containern med klassen 'hide-scrollbar' */
 .hide-scrollbar::-webkit-scrollbar {
-	/* Gör scrollisten helt transparent */
-	display: none;
-	/* Eller width: 0; för att ta bort utrymmet */
-	width: 0;
+  /* Gör scrollisten helt transparent */
+  display: none;
+  /* Eller width: 0; för att ta bort utrymmet */
+  width: 0;
 }
 
 /* Du kan också lägga till detta i din globala CSS-fil för alla WebKit-baserade webbläsare: */
 /* Om du vill att listan ska vara scrollbar men utan scrollist, använd denna */
 .hide-scrollbar {
-	-ms-overflow-style: none; /* Döljer scrollisten i IE och Edge */
-	scrollbar-width: none; /* För Firefox (se Lösning 2 nedan) */
+  -ms-overflow-style: none; /* Döljer scrollisten i IE och Edge */
+  scrollbar-width: none; /* För Firefox (se Lösning 2 nedan) */
+}
+@media (max-width: 650px) {
+  .hide {
+    display: none;
+  }
 }

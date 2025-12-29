@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 
 import ChatRoomComponent from "../ChatRoom/ChatRoomComponent";
 import ChatBox from "../ChatBox/ChatBox";
-import LoadingState from "../LoadingState";
+import LoadingState from "../LoadingState/LoadingState";
 import { useSignalRContext } from "../../context/SignalRContext";
 
 type Props = {};

@@ -1,5 +1,5 @@
-import { useState, type SetStateAction } from "react";
-import { usePollsContext } from "../context/PollsContext";
+import { useEffect, useState, type SetStateAction } from "react";
+import { usePollsContext } from "../../context/PollsContext";
 
 type Props = {
   setPageNo: React.Dispatch<SetStateAction<number>>;
@@ -22,7 +22,7 @@ const FilterPolls = ({ setPageNo }: Props) => {
     setPageNo(0);
   };
   return (
-    <div className="flex flex-col gap-0 p-3 w-64 max-h-188 bg-white shadow-xl rounded-lg">
+    <div className="flex flex-col gap-0 p-3 w-64 max-h-188 bg-white shadow-xl rounded-lg hide">
       {/* --- 1. Navigeringsfilter (Filtrera efter Status) --- */}
       <ul className="flex flex-col gap-2">
         <h4 className="font-bolder text-gray-700 mb-1 px-1">Filter</h4>

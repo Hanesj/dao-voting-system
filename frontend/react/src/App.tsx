@@ -2,10 +2,11 @@ import "./App.css";
 // mport Navbar from './components/navbar/Navbar';
 import { usePollsContext } from "./context/PollsContext";
 import { useEffect, useState } from "react";
-import Pagination from "./components/Pagination";
-import MainComponent from "./components/MainComponent";
+import MainComponent from "./components/MainComponent/MainComponent";
+import Pagination from "./components/Pagination/Pagination";
 import Toast from "./components/PopupModal/Toast";
 import { useSignalRContext } from "./context/SignalRContext";
+import { useWallet } from "./hooks/useWallet";
 function App() {
   const { polls, addPoll, masterPolls } = usePollsContext();
   const {
@@ -13,6 +14,7 @@ function App() {
     actions: { showModal },
     modalMessage,
   } = useSignalRContext();
+  const { disconnectWallet } = useWallet();
   const [pageNo, setPageNo] = useState<number>(0);
   const itemsPerPage = 2;
   //const { addOptionToPoll, addVote, openVoting } = usePoll();
@@ -45,7 +47,15 @@ function App() {
     <>
       {/* <Navbar /> */}
       <div>
-        <h1>Find and Create Polls</h1>
+        <div className="flex justify-between">
+          <h1 className="grow-1">Find and Create Polls</h1>
+          <button
+            onClick={disconnectWallet}
+            className="max-h-10 self-center mr-45"
+          >
+            Disconnect wallet
+          </button>
+        </div>
 
         <Toast
           isOpen={isModalOpen}
