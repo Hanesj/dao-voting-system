@@ -4,6 +4,9 @@ Hash: SHA512
 Exam project for bcu24d.
 DAO-voting system for developers.
 Built with dotnet, react solidity.
+CRLF.
+
+
 -----BEGIN PGP SIGNATURE-----
 
 iHUEARYKAB0WIQQbQqtxBkwLrI8IuMuDzq02WWBJ3gUCaUPzOwAKCRCDzq02WWBJ
