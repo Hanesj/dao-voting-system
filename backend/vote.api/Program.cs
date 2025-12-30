@@ -15,7 +15,9 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("ReactFrontEnd", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins("http://localhost:5173",
+        "http://10.0.0.10:3000",
+        "http://frontend.lab.internal")
         .AllowAnyHeader()
         .AllowAnyMethod()
         .AllowCredentials();
