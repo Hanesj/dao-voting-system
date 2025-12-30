@@ -35,7 +35,7 @@ export const useWallet = () => {
       rpcUrls: {
         default: {
           http: ["https://eth-sepolia.g.alchemy.com/v2/WwmyBWYYAuWLTHY0KykCb"],
-        }, // Din Alchemy URL
+        },
       },
     });
 
