@@ -17,6 +17,7 @@ This project is a **Decentralized Autonomous Organization (DAO) voting system** 
 ## Prerequisites
 
 - **.NET 8.0** – for backend
+- **dotnet-ef** - for db handling
 - **PostgreSQL** – local database for chat logs
 - **Node.js & npm** – required for frontend
 - **MetaMask** – browser wallet to interact with Ethereum Sepolia testnet
@@ -66,6 +67,11 @@ Or export as environment variable:
 
 ```bash
 export ConnectionStrings__DefaultConnection='Host=localhost;Port=5432;Database=dao_chat;Username=<username>;Password=<password>'
+```
+Then
+```bash
+dotnet ef migrations add Init
+dotnet ef database update
 ```
 
 4.
