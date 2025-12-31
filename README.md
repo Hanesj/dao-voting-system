@@ -1,55 +1,98 @@
-# DAO Voting System
+# DAO Voting System (Proxmox Version)
 
-This project is a **Decentralized Autonomous Organization (DAO) voting system** designed to demonstrate transparency and decentralized decision-making in Web3 projects. It allows project teams to create polls, vote securely using their wallets, and discuss propositions in real time.
+This project is a **Decentralized Autonomous Organization (DAO) voting system** designed to demonstrate transparency and decentralized decision-making in Web3 projects. It allows project teams to create polls, vote securely using their wallets, and discuss propositions in real time. This version is deployed on a **Proxmox server** with separate VMs and an LXC container for scalability.
 
 ---
 
 ## Features
 
 - **Decentralized Voting**: All votes are recorded on the Ethereum Sepolia testnet blockchain.
-- **Chat for Discussion**: Integrated SignalR chat to discuss propositions before voting.
+- **Real-Time Chat**: Integrated SignalR chat for discussing propositions before voting.
 - **Transparent Results**: Poll outcomes are verifiable and immutable.
-- **Minimal Backend Storage**: Only chat logs are stored; all voting data is fetched from the blockchain.
-- **Scalable Deployment**: Runs on a Proxmox server with two Debian 12 VMs and an LXC container.
+- **Minimal Backend Storage**: Only chat logs are stored; voting data is fetched directly from the blockchain.
+- **Scalable Deployment**: Backend, frontend, and database run on separate VMs/LXC container on Proxmox.
 
 ---
 
+## Prerequisites
+
+- **.NET 8.0** – for backend
+- **dotnet-ef** - for db handling
+- **PostgreSQL** – LXC container database
+- **Node.js & npm** – for frontend
+- **MetaMask** – browser wallet for Ethereum Sepolia testnet
+- **Proxmox Server** – running 2 Debian 12 VMs and 1 LXC container
+
 ---
 
-## Tech Stack
+## Setup
 
-- **Smart Contract:** Solidity
-- **Frontend:** React
-- **Backend:** .NET 8.0 (SignalR, nethereum)
-- **Database:** PostgreSQL
-- **Deployment:** Proxmox (2 VMs + 1 LXC container)
-
----
-
-## Getting Started
-
-1. Clone the repository:
+### Clone Repository
 
 ```bash
 git clone https://github.com/Hanesj/dao-voting-system.git
 ```
 
-Set up the backend and frontend on their respective VMs.
+```bash
+cd dao-voting-system
+```
 
-Deploy the PostgreSQL LXC container.
+## Backend VM (Debian 12) Setup
 
-Connect MetaMask to the Sepolia testnet.
+Navigate to the backend folder:
 
-Run the frontend and backend servers.
+```bash
+cd backend/vote.api
+```
 
-Usage
+Restore and build the project:
 
-Authenticate with your Ethereum wallet.
+```bash
+dotnet restore
+dotnet build
+dotnet ef migrations add Init
+dotnet ef database update
+```
 
-Create a poll and submit voting options.
+Configure the backend to connect to the database in the LXC container:
 
-Vote on active polls.
+```bash
+{
+"ConnectionStrings": {
+"DefaultConnection": "Host=10.0.0.30;Port=5432;Database=dao_chat;Username=<username>;Password=<password>"
+    }
+}
+Or export as environment variable:
+export ConnectionStrings__DefaultConnection='Host=10.0.0.30;Port=5432;Database=dao_chat;Username=<username>;Password=<password>'
 
-Discuss propositions in the chat before voting.
+```
 
-View poll results in real-time.
+Run the backend server:
+
+```bash
+dotnet run
+```
+
+## Frontend VM (Debian 12) Setup
+
+Navigate to the frontend folder:
+
+```bash
+cd frontend
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the frontend:
+
+```bash
+npm start
+```
+
+## Client-Browser
+
+Open the browser and connect MetaMask to the Sepolia testnet.
