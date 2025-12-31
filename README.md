@@ -1,3 +1,5 @@
+# (Theres another branch for localhost version)
+
 # DAO Voting System (Proxmox Version)
 
 This project is a **Decentralized Autonomous Organization (DAO) voting system** designed to demonstrate transparency and decentralized decision-making in Web3 projects. It allows project teams to create polls, vote securely using their wallets, and discuss propositions in real time. This version is deployed on a **Proxmox server** with separate VMs and an LXC container for scalability.
