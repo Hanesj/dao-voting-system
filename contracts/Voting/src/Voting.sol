@@ -40,7 +40,7 @@ contract Voting {
         require(keccak256(bytes(addOption)) != keccak256(bytes("")), "Optionname cannot be empty.");
         require(!optionExists[addOption], "Option already exists.");
 
-        // Temporary multiple options per user
+        
         if (!hasAddedOption[msg.sender] || hasAddedOption[msg.sender]) {
             options.push(VoteOption({option: addOption, suggester: msg.sender, voteCount: 0}));
             hasAddedOption[msg.sender] = true;
@@ -68,7 +68,7 @@ contract Voting {
     function voteOnOption(uint256 index) public {
         require(state == VotingState.Ongoing, "Voting is not ongoing.");
         require(index < options.length);
-        // Temporary users can vote multiple times
+        
         require(!hasVoted[msg.sender], "Can only vote once.");
         VoteOption storage option = options[index];
         option.voteCount += 1;

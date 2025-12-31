@@ -42,7 +42,7 @@ export const SignalRProvider = ({
   useEffect(() => {
     const connectSignalR = async () => {
       const newConnection = new SignalR.HubConnectionBuilder()
-        .withUrl("http://localhost:5037/chathub")
+        .withUrl("http://10.0.0.20:5037/chathub")
         .withAutomaticReconnect()
         .build();
 
