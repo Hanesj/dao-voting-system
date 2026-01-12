@@ -52,8 +52,6 @@ Restore and build the project:
 ```bash
 dotnet restore
 dotnet build
-dotnet ef migrations add Init
-dotnet ef database update
 ```
 
 Configure the backend to connect to the database in the LXC container:
@@ -66,7 +64,11 @@ Configure the backend to connect to the database in the LXC container:
 }
 Or export as environment variable:
 export ConnectionStrings__DefaultConnection='Host=10.0.0.30;Port=5432;Database=dao_chat;Username=<username>;Password=<password>'
-
+```
+Then:
+```bash
+dotnet ef migrations add Init
+dotnet ef database update
 ```
 
 Run the backend server:
